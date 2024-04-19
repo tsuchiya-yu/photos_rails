@@ -1,1 +1,4 @@
-<p class='text-red-500'><%= @message =%></p>
+<p class='text-red-500'><%= @message %></p>
+<%# TODO: とりあえずログインの入り口。別途ページを実装する。 %>
+<%= button_to "LINEでログイン", user_line_omniauth_authorize_path, method: :post %>
+<%= mypage_url %>

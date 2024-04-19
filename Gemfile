@@ -74,3 +74,6 @@ group :test do
 end
 
 gem "tailwindcss-rails", "~> 2.4"
+gem 'devise'
+gem 'omniauth'
+gem 'omniauth-line'

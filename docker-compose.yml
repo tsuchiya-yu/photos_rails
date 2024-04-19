@@ -26,6 +26,8 @@ services:
       TZ: Asia/Tokyo
       DATABASE_URL: postgres://postgres:password@db/photos_rails_development
     tty: true
+    env_file:
+      - .env
   https-portal:
     image: steveltn/https-portal:1
     ports:
