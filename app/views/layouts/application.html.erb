@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>PhotosRails</title>
+    <title><%= content_for?(:title) ? yield(:title) : "TODO:変更する" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -10,10 +10,22 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application.tailwind", "data-turbo-track": "reload" %>
+    <style>
+      @media (min-width: 960px) {
+        .custom-min-height {
+          min-height: calc(-64px + 100vh);
+        }
+      }
+      @media (max-width: 959.9px) {
+        .custom-min-height {
+          min-height: calc(-107px + 100vh);
+        }
+      }
+    </style>
   </head>
 
   <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+    <main class="container mx-auto md:my-28 px-5 custom-min-height">
       <%= yield %>
     </main>
   </body>
