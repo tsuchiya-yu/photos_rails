@@ -65,6 +65,7 @@ group :development do
 
   gem "guard-livereload", require: false
   gem "rack-livereload"
+  gem 'bullet'
 end
 
 group :test do
@@ -77,3 +78,4 @@ gem "tailwindcss-rails", "~> 2.4"
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-line'
+gem 'rails-i18n'
