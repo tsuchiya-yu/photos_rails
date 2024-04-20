@@ -21,12 +21,18 @@
           min-height: calc(-107px + 100vh);
         }
       }
+      .breadcrumbs > a {
+          color: #0095ee;
+      }
     </style>
   </head>
 
   <body>
     <main class="container mx-auto md:my-28 px-5 custom-min-height">
       <%= yield %>
+      <div class='w-full max-w-xl mx-auto'>
+        <%= breadcrumbs pretext: "", separator: " &rsaquo; " %>
+      </div>
     </main>
   </body>
 </html>
