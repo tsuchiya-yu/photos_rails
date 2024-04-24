@@ -1,0 +1,15 @@
+ja:
+  activerecord:
+    models:
+      user: 'ユーザー'
+      group: 'グループ'
+    attributes:
+      user:
+        name: 'お名前'
+      group:
+        name: 'グループ名'
+    errors:
+      messages:
+        invalid: "%{attribute}が正しくありません"
+        blank: "%{attribute}を入力してください"
+        too_short: "%{attribute}は%{count}文字以上で入力してください"
