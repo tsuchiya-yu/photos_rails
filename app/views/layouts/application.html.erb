@@ -29,6 +29,13 @@
 
   <body>
     <main class="container mx-auto md:my-28 px-5 custom-min-height">
+      <div class='w-full max-w-xl mx-auto'>
+        <% flash.each do |type, message| %>
+          <div class="<%= flash_class(type) %> rounded px-4 py-3 mb-4 text-sm">
+            <%= message %>
+          </div>
+        <% end %>
+      </div>
       <%= yield %>
       <div class='w-full max-w-xl mx-auto'>
         <%= breadcrumbs pretext: "", separator: " &rsaquo; " %>
