@@ -1,20 +1,18 @@
 <% content_for :title, "マイページ" %>
-<div class='container mx-auto py-8 w-full max-w-xl flex-grow outline-none custom-min-height'>
+<div class='container mx-auto py-8 w-full max-w-xl flex-grow outline-none'>
     <%= render 'shared/page_title', title: 'マイページ' %>
     <div class="container mx-auto py-8">
         <%= render 'shared/list_title', title: '参加中のグループ' %>
         <%= render 'shared/list_item', title: '' %>
-        <%= render 'shared/list_item', title: '山田ファミリー' %>
-        <%= render 'shared/list_item', title: '第一小学校16年卒' %>
+        <% current_user.groups.each do |group| %>
+            <%= link_to mypage_group_path(group) do %>
+                <%= render 'shared/list_item', title: group.name %>
+            <% end %>
+        <% end %>
 
         <%= link_to new_mypage_group_path do %>
-            <div class="inline text-sm font-normal leading-normal">
-                <svg width="20" height="20" class="mr-1 inline-flex items-center mb-0.5" fill-rule="evenodd" viewBox="0 0 24 24">
-                    <path d="M17.51,11.3H12.7v-5a.7.7,0,0,0-1.4,0v5h-5a.7.7,0,0,0,0,1.4h5v4.81a.7.7,0,0,0,1.4,0V12.7h4.81a.7.7,0,0,0,0-1.4Z"></path>
-                    <path d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18.6A8.6,8.6,0,1,1,20.6,12,8.61,8.61,0,0,1,12,20.6Z"></path>
-                </svg>
-                新しいグループを作成する
-            </div>
+            <%= render 'shared/add_action_label', text: '新しいグループを作成する' %>
         <% end %>
+
     </div>
 </div>
