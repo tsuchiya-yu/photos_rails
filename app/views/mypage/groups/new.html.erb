@@ -1,0 +1,8 @@
+<% content_for :title, "グループ作成" %>
+<div class='container mx-auto py-8 w-full max-w-xl flex-grow outline-nones'>
+    <% breadcrumb :new_mypage_group %>
+    <%= render 'shared/page_title', title: 'グループ作成' %>
+    <div class="container mx-auto py-8">
+        <%= render 'mypage/groups/group_form', url: mypage_groups_path, button_text: "作成する" %>
+    </div>
+</div>

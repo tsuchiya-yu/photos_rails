@@ -1,0 +1,8 @@
+<% content_for :title, "#{@group.name} の編集" %>
+<div class='container mx-auto py-8 w-full max-w-xl flex-grow outline-nones'>
+    <% breadcrumb :edit_mypage_group, @group %>
+    <%= render 'shared/page_title', title: "編集" %>
+    <div class="container mx-auto py-8">
+        <%= render 'mypage/groups/group_form', url: mypage_group_path(@group), button_text: "編集する" %>
+    </div>
+</div>
