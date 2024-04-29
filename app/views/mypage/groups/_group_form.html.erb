@@ -1,0 +1,5 @@
+<%= form_with model: @group, url: url, local: true do |form| %>
+    <%= render 'shared/input_form_text', form: form, field: :name, field_label: "グループ名", field_required: true, placeholder: 'マイファミリー🌸' %>
+    <%= render 'shared/input_form_text', form: form, field: :catchphrase, field_label: "説明", field_required: false, placeholder: '家族の思いでを共有しましょう' %>
+    <%= render 'shared/input_button', button_text: button_text, form: form %>
+<% end %>

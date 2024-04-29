@@ -1,0 +1,19 @@
+<section class="relative mb-8">
+    <div class="mb-4 flex items-end relative bg-primary">
+        <div class='w-full p-0'>
+            <%= form.label field, field_label, class: 'text-xl font-bold leading-snug m-0 p-0 text-gray-600' %>
+            <% unless field_required %>
+                <%= render 'shared/label_optional', field_required: field_required %>
+            <% end %>
+        </div>
+    </div>
+    <div class="flex items-center bg-primary-default rounded border-0 cursor-text relative w-full">
+        <%= form.text_field field, required: field_required, placeholder: placeholder, class: 'block w-full text-base leading-snug text-gray-700 bg-transparent p-4' %>
+        <fieldset class="absolute inset-0 m-0 p-0 border border-transparent pointer-events-none"></fieldset>
+    </div>
+    <% if form.object.errors[field].any? %>
+        <div class="text-sm text-red-500 mt-1">
+            <%= form.object.errors[field].join(', ') %>
+        </div>
+    <% end %>
+</section>
