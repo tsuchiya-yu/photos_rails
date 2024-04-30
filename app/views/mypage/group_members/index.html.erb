@@ -1,0 +1,26 @@
+<% content_for :title, "メンバー管理" %>
+<div class='container mx-auto py-8 w-full max-w-xl flex-grow outline-none'>
+    <% breadcrumb :mypage_group_group_members, @group %>
+    <%= render 'shared/page_title', title: 'メンバー管理' %>
+    <div class="container mx-auto py-8">
+        <%= render 'shared/list_title', title: '参加中のメンバー' %>
+        <%= render 'shared/list_item', title: '' %>
+        <% @group.group_members.each do |member| %>
+            <section class='mb-4'>
+                <% if member.is_master %>
+                    <div class="ml-2 inline-flex align-text-bottom">
+                        <span class="bg-gray-300 text-gray-800 text-xs font-bold leading-snug py-0.5 px-1 inline-flex items-center">
+                            <span class="max-w-xs overflow-hidden truncate">
+                                オーナー
+                            </span>
+                        </span>
+                    </div>
+                <% end %>
+                <%= member.user.name %>
+            </section>
+            <%= render 'shared/list_item', title: '' %>
+        <% end %>
+        <%# TODO: 実装する %>
+        <%= render 'shared/add_action_label', text: 'メンバーを招待する' %>
+    </div>
+</div>
