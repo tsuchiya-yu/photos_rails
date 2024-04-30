@@ -6,61 +6,24 @@
         <p><%= @album.catchphrase %></p>
     </div>
 
-    <form id="uploadForm">
-        <input type="file" id="media" name="media[]" accept="image/*,video/*" multiple>
-        <button type="submit">アップロード</button>
-    </form>
+    <section class='mb-8'>
+        <%= render 'shared/list_title', title: '設定' %>
+        <%= render 'shared/list_item', title: '' %>
+        <%= link_to edit_api_v1_album_path(id: @album.group.id) do %>
+            <%= render 'shared/list_item', title: '編集する' %>
+        <% end %>
+        <%= link_to confirm_destroy_mypage_group_album_path(group_id: @album.group.id, id: @album.id) do %>
+            <%= render 'shared/list_item', title: '削除する' %>
+        <% end %>
+    </section>
 
-    <%# プレビュー画像の表示エリア  %>
-    <div id="previewContainer" class='flex flex-wrap overflow-hidden w-screen left-0 mt-24' style='left: 0px;'></div>
-
-    <div class='flex flex-wrap overflow-hidden w-screen absolute left-0 mt-24' style='left: 0px;'>
+    <div class='flex flex-wrap overflow-hidden'>
         <% @album.media_items.each do |item| %>
-            <img class="w-1/4 sm:w-1/12 object-cover border-2 border-black h-full" src="<%= rails_blob_path(item.media) %>" style='aspect-ratio: 1 / 1;' loading="lazy" />
+          <div class="w-1/4 object-cover border-2 border-black h-full bg-no-repeat bg-center" style="aspect-ratio: 1 / 1; background-image: url(<%= asset_path('loading.gif') %>);">
+            <img class="w-full h-full object-cover" src="<%= rails_blob_path(item.media) %>" onload="this.parentNode.style.backgroundImage = 'none';" loading="lazy" />
+        </div>
         <% end %>
     </div>
 
     <% breadcrumb :mypage_group_album, @album %>
-
 </div>
-
-<script>
-    document.getElementById('uploadForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const formData = new FormData();
-        const mediaFiles = document.getElementById('media').files;
-        Array.from(mediaFiles).forEach(file => {
-            formData.append('media_item[media][]', file);
-        });
-
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-        fetch("<%= api_v1_album_media_items_path(album_id: @album.id) %>", {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRF-Token': csrfToken
-            }
-        })
-        .then(response => response.json())
-        .then(data => console.log('Success:', data))
-        .catch(error => console.error('Error:', error));
-    });
-
-    document.getElementById('media').addEventListener('change', function(event) {
-        const files = event.target.files;
-        const previewContainer = document.getElementById('previewContainer');
-        previewContainer.innerHTML = '';
-        Array.from(files).forEach(file => {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.style.aspectRatio = "1 / 1";
-                img.classList.add('w-1/4', 'sm:w-1/12', 'object-cover', 'border-2', 'border-black', 'h-full');
-                previewContainer.appendChild(img);
-            };
-            reader.readAsDataURL(file);
-        });
-    });
-</script>
