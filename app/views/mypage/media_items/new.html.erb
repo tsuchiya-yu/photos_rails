@@ -11,41 +11,28 @@
         <label for="media" class="px-6 py-2 bg-red-500 text-white rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-50 cursor-pointer">ファイルを選択</label>
         <input type="file" id="media" name="media[]" accept="image/*,video/*" multiple class="hidden">
     </form>
-
 </div>
 
 <script>
-    document.getElementById('uploadForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const formData = new FormData();
-        const mediaFiles = document.getElementById('media').files;
-        Array.from(mediaFiles).forEach(file => {
-            formData.append('media_item[media][]', file);
-        });
-
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-        fetch("<%= api_v1_album_media_items_path(album_id: @album.id) %>", {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRF-Token': csrfToken
-            }
-        })
-        .then(response => response.json())
-        .then(data => console.log('Success:', data))
-        .catch(error => console.error('Error:', error));
-    });
-
-    document.getElementById('media').addEventListener('change', function(event) {
-        const files = event.target.files;
+    document.addEventListener('DOMContentLoaded', function() {
+        const uploadForm = document.getElementById('uploadForm');
+        const mediaInput = document.getElementById('media');
         const previewContainer = document.getElementById('previewContainer');
-        previewContainer.innerHTML = '';
-        Array.from(files).forEach(file => {
+
+        function handleFiles(files) {
+            files = [...files];
+            files.forEach(file => {
+                previewFile(file);
+                uploadFile(file);
+            });
+        }
+
+        function previewFile(file) {
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.readAsDataURL(file);
+            reader.onloadend = () => {
                 const img = document.createElement('img');
-                img.src = e.target.result;
+                img.src = reader.result;
                 img.className = 'w-full h-full object-cover';
                 const imageContainer = document.createElement('div');
                 imageContainer.className = 'w-1/4 object-cover border-2 border-black h-full bg-no-repeat bg-center';
@@ -53,19 +40,37 @@
                 imageContainer.style.backgroundImage = 'url(<%= asset_path("loading.gif") %>)';
                 imageContainer.appendChild(img);
                 previewContainer.appendChild(imageContainer);
-
-                img.onload = function() {
+                img.onload = () => {
                     imageContainer.style.backgroundImage = 'none';
                 };
             };
-            reader.readAsDataURL(file);
+        }
+
+        function uploadFile(file) {
+            const formData = new FormData();
+            formData.append('media_item[media][]', file);
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            fetch("<%= api_v1_album_media_items_path(album_id: @album.id) %>", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-Token': csrfToken
+                }
+            })
+            .then(response => response.json())
+            .then(data => console.log('Success:', data))
+            .catch(error => console.error('Error:', error));
+        }
+
+        mediaInput.addEventListener('change', function() {
+            handleFiles(this.files);
         });
-    });
 
-    const actualBtn = document.getElementById('media');
-    const fileChosen = document.getElementById('file-chosen');
-
-    actualBtn.addEventListener('change', function() {
-        fileChosen.textContent = this.files.length > 0 ? this.files[0].name : '選択されてません';
+        uploadForm.addEventListener('dragover', e => e.preventDefault());
+        uploadForm.addEventListener('drop', e => {
+            e.preventDefault();
+            handleFiles(e.dataTransfer.files);
+        });
     });
 </script>
