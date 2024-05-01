@@ -3,13 +3,14 @@
     <% breadcrumb :new_mypage_group_album_media_item, @album %>
     <%= render 'shared/page_title', title: '動画・写真の追加' %>
 
-    <div id="previewContainer" class='flex flex-wrap overflow-hidden mt-5'>
+    <div id="previewContainer" class='flex flex-wrap overflow-hidden my-5'>
         <%# アップロードされた画像の表示エリア %>
     </div>
 
     <form id="uploadForm" class="flex flex-col items-center justify-center p-6 border-2 border-red-500 border-dashed rounded-lg shadow-md">
         <label for="media" class="px-6 py-2 bg-red-500 text-white rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-50 cursor-pointer">ファイルを選択</label>
         <input type="file" id="media" name="media[]" accept="image/*,video/*" multiple class="hidden">
+        <span id="file-chosen" class="text-sm text-gray-500 mt-3">または ドラッグ&ドロップ</span>
     </form>
 </div>
 
@@ -34,12 +35,22 @@
                 const img = document.createElement('img');
                 img.src = reader.result;
                 img.className = 'w-full h-full object-cover';
+
+                const closeButton = document.createElement('div');
+                closeButton.innerHTML = '×';
+                closeButton.className = 'absolute top-0 right-0 bg-red-500 text-white w-6 h-6 flex items-center justify-center rounded-full cursor-pointer opacity-70';
+                closeButton.onclick = function() {
+                    imageContainer.remove();
+                };
+
                 const imageContainer = document.createElement('div');
-                imageContainer.className = 'w-1/4 object-cover border-2 border-black h-full bg-no-repeat bg-center';
+                imageContainer.className = 'w-1/4 object-cover border-2 border-black h-full bg-no-repeat bg-center relative';
                 imageContainer.style.aspectRatio = '1 / 1';
                 imageContainer.style.backgroundImage = 'url(<%= asset_path("loading.gif") %>)';
                 imageContainer.appendChild(img);
+                imageContainer.appendChild(closeButton);
                 previewContainer.appendChild(imageContainer);
+                
                 img.onload = () => {
                     imageContainer.style.backgroundImage = 'none';
                 };
