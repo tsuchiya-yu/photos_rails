@@ -1,0 +1,71 @@
+<% content_for :title, "動画・写真の追加" %>
+<div class='container mx-auto py-8 w-full max-w-xl flex-grow outline-none bg-white'>
+    <% breadcrumb :new_mypage_group_album_media_item, @album %>
+    <%= render 'shared/page_title', title: '動画・写真の追加' %>
+
+    <div id="previewContainer" class='flex flex-wrap overflow-hidden mt-5'>
+        <%# アップロードされた画像の表示エリア %>
+    </div>
+
+    <form id="uploadForm" class="flex flex-col items-center justify-center p-6 border-2 border-red-500 border-dashed rounded-lg shadow-md">
+        <label for="media" class="px-6 py-2 bg-red-500 text-white rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-50 cursor-pointer">ファイルを選択</label>
+        <input type="file" id="media" name="media[]" accept="image/*,video/*" multiple class="hidden">
+    </form>
+
+</div>
+
+<script>
+    document.getElementById('uploadForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData();
+        const mediaFiles = document.getElementById('media').files;
+        Array.from(mediaFiles).forEach(file => {
+            formData.append('media_item[media][]', file);
+        });
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        fetch("<%= api_v1_album_media_items_path(album_id: @album.id) %>", {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-Token': csrfToken
+            }
+        })
+        .then(response => response.json())
+        .then(data => console.log('Success:', data))
+        .catch(error => console.error('Error:', error));
+    });
+
+    document.getElementById('media').addEventListener('change', function(event) {
+        const files = event.target.files;
+        const previewContainer = document.getElementById('previewContainer');
+        previewContainer.innerHTML = '';
+        Array.from(files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.className = 'w-full h-full object-cover';
+                const imageContainer = document.createElement('div');
+                imageContainer.className = 'w-1/4 object-cover border-2 border-black h-full bg-no-repeat bg-center';
+                imageContainer.style.aspectRatio = '1 / 1';
+                imageContainer.style.backgroundImage = 'url(<%= asset_path("loading.gif") %>)';
+                imageContainer.appendChild(img);
+                previewContainer.appendChild(imageContainer);
+
+                img.onload = function() {
+                    imageContainer.style.backgroundImage = 'none';
+                };
+            };
+            reader.readAsDataURL(file);
+        });
+    });
+
+    const actualBtn = document.getElementById('media');
+    const fileChosen = document.getElementById('file-chosen');
+
+    actualBtn.addEventListener('change', function() {
+        fileChosen.textContent = this.files.length > 0 ? this.files[0].name : '選択されてません';
+    });
+</script>
