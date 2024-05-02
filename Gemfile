@@ -6,7 +6,7 @@ ruby "3.3.0"
 gem "rails", "~> 7.1.3", ">= 7.1.3.2"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
-# gem "sprockets-rails" 
+# gem "sprockets-rails"
 
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
@@ -36,7 +36,7 @@ gem "jbuilder"
 # gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[ windows jruby ]
+gem "tzinfo-data", platforms: %i(windows jruby)
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
@@ -50,7 +50,7 @@ gem 'cssbundling-rails'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[ mri windows ]
+  gem "debug", platforms: %i(mri windows)
 end
 
 group :development do
@@ -66,6 +66,7 @@ group :development do
   gem "guard-livereload", require: false
   gem "rack-livereload"
   gem 'bullet'
+  gem 'rubocop-airbnb'
 end
 
 group :test do
@@ -80,3 +81,4 @@ gem 'omniauth'
 gem 'omniauth-line'
 gem 'rails-i18n'
 gem 'gretel'
+gem 'image_processing'

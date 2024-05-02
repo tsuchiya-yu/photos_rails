@@ -276,11 +276,10 @@ Devise.setup do |config|
     client_options: {
       site: 'https://access.line.me',
       authorize_url: '/oauth2/v2.1/authorize',
-      token_url: '/oauth2/v2.1/token'
+      token_url: '/oauth2/v2.1/token',
     },
-    redirect_uri: ENV['LINE_REDIRECT_URL']
+    redirect_uri: ENV['LINE_REDIRECT_URL'],
   }
-
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
@@ -319,5 +318,4 @@ Devise.setup do |config|
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
-
 end
