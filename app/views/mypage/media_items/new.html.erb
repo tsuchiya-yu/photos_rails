@@ -24,7 +24,7 @@
             files = [...files];
             files.forEach(file => {
                 previewFile(file);
-                uploadFile(file);
+                uploadFile(file, file.name);
             });
         }
 
@@ -39,9 +39,6 @@
                 const closeButton = document.createElement('div');
                 closeButton.innerHTML = '×';
                 closeButton.className = 'absolute top-0 right-0 bg-red-500 text-white w-6 h-6 flex items-center justify-center rounded-full cursor-pointer opacity-70';
-                closeButton.onclick = function() {
-                    imageContainer.remove();
-                };
 
                 const imageContainer = document.createElement('div');
                 imageContainer.className = 'w-1/4 object-cover border-2 border-black h-full bg-no-repeat bg-center relative';
@@ -49,15 +46,40 @@
                 imageContainer.style.backgroundImage = 'url(<%= asset_path("loading.gif") %>)';
                 imageContainer.appendChild(img);
                 imageContainer.appendChild(closeButton);
+                imageContainer.setAttribute('data-file-name', file.name);
                 previewContainer.appendChild(imageContainer);
-                
+
                 img.onload = () => {
                     imageContainer.style.backgroundImage = 'none';
                 };
+                
+                closeButton.addEventListener('click', function() {
+                    if (imageContainer.hasAttribute('data-file-id')) {
+                        const fileId = imageContainer.getAttribute('data-file-id');
+                        const baseUrl = `<%= api_v1_album_media_item_path(album_id: @album.id, id: 'FILE_ID') %>`;
+                        const url = baseUrl.replace('FILE_ID', fileId);
+
+                        fetch(url, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            }
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                imageContainer.remove();
+                                console.log('Success:', data);
+                            } else {
+                                alert('画像の削除に失敗しました.時間をおいて再度お試しください.');
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                    }
+                });
             };
         }
 
-        function uploadFile(file) {
+        function uploadFile(file, fileName) {
             const formData = new FormData();
             formData.append('media_item[media][]', file);
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -70,7 +92,15 @@
                 }
             })
             .then(response => response.json())
-            .then(data => console.log('Success:', data))
+            .then(data => {
+                if (data.id) {
+                    const imageContainer = document.querySelector(`div[data-file-name="${fileName}"]`);
+                    if (imageContainer) {
+                        imageContainer.setAttribute('data-file-id', data.id);
+                    }
+                }
+                console.log('Success:', data);
+            })
             .catch(error => console.error('Error:', error));
         }
 
