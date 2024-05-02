@@ -6,7 +6,10 @@ class User < ApplicationRecord
           :trackable,
           :omniauthable, omniauth_providers: [:line]
 
-  has_many :groups, dependent: :destroy
+  has_many :group_members, dependent: :destroy
+  has_many :groups, through: :group_members
+  has_many :albums, through: :groups
+  has_many :media_items, through: :albums
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
@@ -25,11 +28,10 @@ class User < ApplicationRecord
         uid: auth_info.uid,
         provider: auth_info.provider,
         name: auth_info.info.name,
-        password: Devise.friendly_token[0,20] # ランダム値(現状使わないので)
+        password: Devise.friendly_token[0, 20] # ランダム値(現状使わないので)
       )
       user.save
     end
     user
   end
-
 end

@@ -1,5 +1,5 @@
 class SampleController < ApplicationController
-    def index
-        @message = 'Hello, World!'
-    end
+  def index
+    @message = 'Hello, World!'
+  end
 end

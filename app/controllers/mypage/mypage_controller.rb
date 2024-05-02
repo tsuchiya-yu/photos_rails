@@ -1,4 +1,4 @@
 class Mypage::MypageController < Mypage::MypageApplicationController
-    def index
-    end
+  def index
+  end
 end

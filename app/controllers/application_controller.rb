@@ -1,9 +1,8 @@
 class ApplicationController < ActionController::Base
+  protected
 
-    protected
-
-    # ユーザーがログイン後にリダイレクトされるパス
-    def after_sign_in_path_for(resource)
-        mypage_path
-    end
+  # ユーザーがログイン後にリダイレクトされるパス
+  def after_sign_in_path_for(resource)
+    mypage_path
+  end
 end

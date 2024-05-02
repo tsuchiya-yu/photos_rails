@@ -9,7 +9,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     else
       # ユーザーが保存できなかった場合
       session["devise.line_data"] = auth.except("extra")
-      redirect_to new_user_registration_url, alert: "ユーザーアカウントの作成に失敗しました: #{user.errors.full_messages.to_sentence}"
+      redirect_to new_user_registration_url,
+alert: "ユーザーアカウントの作成に失敗しました: #{user.errors.full_messages.to_sentence}"
     end
   end
 
@@ -18,5 +19,4 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def auth
     request.env["omniauth.auth"]
   end
-
 end
