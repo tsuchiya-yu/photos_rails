@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1
-
 # Use an official Ruby runtime as a parent image
 FROM ruby:3.3.0-slim
 
@@ -10,6 +8,9 @@ RUN apt-get update -qq && apt-get install -y build-essential libpq-dev curl
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get update -qq && \
     apt-get install -y nodejs postgresql-client
+
+# Install ImageMagick
+RUN apt-get update -qq && apt-get install -y imagemagick libmagickwand-dev
 
 # Install Yarn
 RUN npm install -g yarn
