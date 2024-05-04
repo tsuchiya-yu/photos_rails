@@ -30,7 +30,6 @@ class Api::V1::MediaItemsController < ApplicationController
 
   private
 
-  # Strong Parametersを修正
   def media_item_params
     params.require(:media_item).permit(media: [])
   end

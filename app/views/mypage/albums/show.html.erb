@@ -9,7 +9,7 @@
     <section class='mb-8'>
         <%= render 'shared/list_title', title: '設定' %>
         <%= render 'shared/list_item', title: '' %>
-        <%= link_to edit_api_v1_album_path(id: @album.group.id) do %>
+        <%= link_to edit_mypage_group_album_path(group_id: @album.group.id, id: @album.id) do %>
             <%= render 'shared/list_item', title: '編集する' %>
         <% end %>
         <%= link_to confirm_destroy_mypage_group_album_path(group_id: @album.group.id, id: @album.id) do %>
@@ -17,13 +17,49 @@
         <% end %>
     </section>
 
-    <div class='flex flex-wrap overflow-hidden'>
+    <div class='flex flex-wrap overflow-hidden mb-5'>
         <% @album.media_items.each do |item| %>
-          <div class="w-1/4 object-cover border-2 border-black h-full bg-no-repeat bg-center" style="aspect-ratio: 1 / 1; background-image: url(<%= asset_path('loading.gif') %>);">
-            <img class="w-full h-full object-cover" src="<%= rails_blob_path(item.media) %>" onload="this.parentNode.style.backgroundImage = 'none';" loading="lazy" />
-        </div>
+            <% media = item.thumbnail || item.media %>
+            <% if media.present? %>
+                <div class="w-1/4 object-cover border-2 border-black h-full bg-no-repeat bg-center relative" style="aspect-ratio: 1 / 1; background-image: url(<%= asset_path('loading.gif') %>);">
+                    <img class="w-full h-full object-cover" src="<%= rails_blob_path(item.thumbnail || item.media) %>" onload="this.parentNode.style.backgroundImage = 'none';" loading="lazy" />
+                    <div class="close-button absolute top-0 right-0 bg-red-500 text-white w-6 h-6 flex items-center justify-center rounded-full cursor-pointer opacity-70" data-item-id="<%= item.id %>">×</div>
+                </div>
+            <% end %>
         <% end %>
     </div>
 
+    <%= link_to new_mypage_group_album_media_item_path(group_id: @album.group.id, album_id: @album.id) do %>
+        <%= render 'shared/add_action_label', text: '写真を追加する' %>
+    <% end %>
+
     <% breadcrumb :mypage_group_album, @album %>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.w-1\\/4 .close-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const fileId = this.getAttribute('data-item-id');
+                const baseUrl = `<%= api_v1_album_media_item_path(album_id: @album.id, id: 'FILE_ID') %>`;
+                const url = baseUrl.replace('FILE_ID', fileId);
+
+                fetch(url, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        this.parentElement.remove();
+                        console.log('Success:', response);
+                    } else {
+                        alert('画像の削除に失敗しました.時間をおいて再度お試しください.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    });
+</script>
