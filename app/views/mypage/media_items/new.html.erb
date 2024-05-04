@@ -29,9 +29,24 @@
             showLoading();
 
             files.forEach(file => {
+                const preview = document.createElement('div');
+                preview.className = 'w-1/4 object-cover border-2 border-black h-full bg-no-repeat bg-center relative';
+                preview.style.aspectRatio = '1 / 1';
+                previewContainer.appendChild(preview);
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'w-full h-full object-cover';
+                    img.maxWidth = '140px';
+                    img.maxHeight = '140px';
+                    preview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+
                 promises.push(new Promise((resolve, reject) => {
-                    previewFile(file);
-                    uploadFile(file, file.name).then(resolve).catch(reject);
+                    uploadFile(file, preview).then(resolve).catch(reject);
                 }));
             });
 
@@ -43,58 +58,7 @@
             });
         }
 
-        function previewFile(file) {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onloadend = () => {
-                const img = document.createElement('img');
-                img.src = reader.result;
-                img.className = 'w-full h-full object-cover';
-
-                const closeButton = document.createElement('div');
-                closeButton.innerHTML = '×';
-                closeButton.className = 'absolute top-0 right-0 bg-red-500 text-white w-6 h-6 flex items-center justify-center rounded-full cursor-pointer opacity-70';
-
-                const imageContainer = document.createElement('div');
-                imageContainer.className = 'w-1/4 object-cover border-2 border-black h-full bg-no-repeat bg-center relative';
-                imageContainer.style.aspectRatio = '1 / 1';
-                imageContainer.style.backgroundImage = 'url(<%= asset_path("loading.gif") %>)';
-                imageContainer.appendChild(img);
-                imageContainer.appendChild(closeButton);
-                imageContainer.setAttribute('data-file-name', file.name);
-                previewContainer.appendChild(imageContainer);
-
-                img.onload = () => {
-                    imageContainer.style.backgroundImage = 'none';
-                };
-                
-                closeButton.addEventListener('click', function() {
-                    if (imageContainer.hasAttribute('data-file-id')) {
-                        const fileId = imageContainer.getAttribute('data-file-id');
-                        const baseUrl = `<%= api_v1_album_media_item_path(album_id: @album.id, id: 'FILE_ID') %>`;
-                        const url = baseUrl.replace('FILE_ID', fileId);
-
-                        fetch(url, {
-                            method: 'DELETE',
-                            headers: {
-                                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                            }
-                        })
-                        .then(response => {
-                            if (response.ok) {
-                                imageContainer.remove();
-                                console.log('Success:', response);
-                            } else {
-                                alert('画像の削除に失敗しました.時間をおいて再度お試しください.');
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
-                    }
-                });
-            };
-        }
-
-        function uploadFile(file, fileName) {
+        function uploadFile(file, previewElement) {
             return new Promise((resolve, reject) => {
                 const formData = new FormData();
                 formData.append('media_item[media][]', file);
@@ -109,11 +73,8 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.id) {
-                        const lastImageContainer = [...document.querySelectorAll('.w-1\\/4')].reverse().find(el => !el.hasAttribute('data-file-id'));
-                        if (lastImageContainer) {
-                            lastImageContainer.setAttribute('data-file-id', data.id);
-                        }
+                    if (data.thumbnail_url) {
+                        previewElement.querySelector('img').src = data.thumbnail_url; // Update to thumbnail URL
                     }
                     console.log('Success:', data);
                     resolve(data);

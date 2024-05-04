@@ -11,7 +11,11 @@ class Api::V1::MediaItemsController < ApplicationController
     end
 
     if @media_item.save
-      render json: @media_item, status: :created
+      render json: {
+        id: @media_item.id,
+        filename: @media_item.media.filename,
+        thumbnail_url: rails_blob_path(@media_item.thumbnail)
+      }, status: :created
     else
       render json: @media_item.errors, status: :unprocessable_entity
     end

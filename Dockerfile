@@ -12,6 +12,9 @@ RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - && \
 # Install ImageMagick
 RUN apt-get update -qq && apt-get install -y imagemagick libmagickwand-dev
 
+# Install FFmpeg
+RUN apt-get install -y ffmpeg
+
 # Install Yarn
 RUN npm install -g yarn
 
