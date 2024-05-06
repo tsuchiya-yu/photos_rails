@@ -13,9 +13,11 @@
         <%= link_to mypage_group_group_members_path(@group) do %>
             <%= render 'shared/list_item', title: 'メンバーを管理する' %>
         <% end %>
+        <%# TODO: is_masterだけ表示する %>
         <%= link_to edit_mypage_group_path(@group) do %>
             <%= render 'shared/list_item', title: '編集する' %>
         <% end %>
+        <%# TODO: is_masterだけ表示する %>
         <%= link_to confirm_destroy_mypage_group_path(@group) do %>
             <%= render 'shared/list_item', title: '削除する' %>
         <% end %>

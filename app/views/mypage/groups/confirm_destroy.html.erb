@@ -8,7 +8,7 @@
         <p>※この操作は取り消すことができません</p>
     </div>
 
-    <p>「<%= @group.name %>」を入力してください</p>
+    <p>「<%= @group.name %>」と入力してください</p>
     <div class="flex items-center bg-primary-default rounded border-0 cursor-text relative w-full">
         <%= text_field_tag 'js-confirm-name', nil, required: true, placeholder: @group.name, class: 'block w-full text-base leading-snug text-gray-700 bg-transparent p-4', id: 'js-confirm-name' %>
         <fieldset class="absolute inset-0 m-0 p-0 border border-transparent pointer-events-none"></fieldset>
@@ -25,7 +25,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const inputField = document.getElementById('js-confirm-name');
     const deleteButton = document.getElementById('js-delete-button');
-    const groupName = "<%= j @group.name %>";
+    const groupName = "<%= @group.name %>";
 
     inputField.addEventListener('input', function() {
         if(inputField.value === groupName) {
