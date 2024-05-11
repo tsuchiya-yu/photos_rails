@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for?(:title) ? yield(:title) : "TODO:変更する" %></title>
+    <title><%= content_for?(:title) ? yield(:title) : "ファミリーフォトアルバム" %></title>
+     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : '完全無料で写真や動画をアップロード。家族の大切な瞬間をすぐに共有し、リアルタイムで繋がることができます。高速アップロードで特別な記憶を逃さずに。' %>">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="robots" content="noindex">
+    <meta name="description" content="完全無料で写真や動画をアップロード。家族の大切な瞬間をすぐに共有し、リアルタイムで繋がることができます。高速アップロードで特別な記憶を逃さずに。">
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
@@ -10,6 +14,9 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application.tailwind", "data-turbo-track": "reload" %>
+
+    <%= favicon_link_tag 'favicon.ico' %>
+
     <style>
       @media (min-width: 960px) {
         .custom-min-height {
@@ -21,8 +28,11 @@
           min-height: calc(-107px + 100vh);
         }
       }
+      .breadcrumbs {
+        margin-bottom: 20px;
+      }
       .breadcrumbs > a {
-          color: #0095ee;
+        color: #0095ee;
       }
     </style>
   </head>

@@ -1,0 +1,5 @@
+<%= form_with model: @album, url: url, local: true do |form| %>
+    <%= render 'shared/input_form_text', form: form, field: :name, field_label: "アルバム名", field_required: true, placeholder: '2024/01 箱根旅行🚃' %>
+    <%= render 'shared/input_form_text', form: form, field: :catchphrase, field_label: "ひとこと", field_required: false, placeholder: 'TODO: 良い感じにしてお昼はxxxxに行って' %>
+    <%= render 'shared/input_button', button_text: button_text, form: form %>
+<% end %>

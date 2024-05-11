@@ -22,7 +22,9 @@
             <% media = item.thumbnail || item.media %>
             <% if media.present? %>
                 <div class="w-1/4 object-cover border-2 border-black h-full bg-no-repeat bg-center relative" style="aspect-ratio: 1 / 1; background-image: url(<%= asset_path('loading.gif') %>);">
-                    <img class="w-full h-full object-cover" src="<%= rails_blob_path(item.thumbnail || item.media) %>" onload="this.parentNode.style.backgroundImage = 'none';" loading="lazy" />
+                    <%= link_to mypage_group_album_media_item_path(group_id: @album.group.id, album_id: @album.id, id: item.id) do %>
+                        <img class="w-full h-full object-cover" src="<%= rails_blob_path(media) %>" onload="this.parentNode.style.backgroundImage = 'none';" loading="lazy" />
+                    <% end %>
                     <div class="close-button absolute top-0 right-0 bg-red-500 text-white w-6 h-6 flex items-center justify-center rounded-full cursor-pointer opacity-70" data-item-id="<%= item.id %>">×</div>
                 </div>
             <% end %>

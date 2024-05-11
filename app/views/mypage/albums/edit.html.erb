@@ -1,0 +1,8 @@
+<% content_for :title, "#{@album.name}の編集" %>
+<div class='container mx-auto py-8 w-full max-w-xl flex-grow outline-none'>
+    <% breadcrumb :edit_mypage_group_album, @album %>
+    <%= render 'shared/page_title', title: '編集' %>
+    <div class="container mx-auto py-8">
+        <%= render 'mypage/albums/album_form', url: mypage_group_album_path(group_id: @album.group.id, id: @album.id), button_text: "編集する" %>
+    </div>
+</div>

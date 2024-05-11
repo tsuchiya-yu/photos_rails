@@ -1,0 +1,8 @@
+<% content_for :title, "アルバム作成" %>
+<div class='container mx-auto py-8 w-full max-w-xl flex-grow outline-none'>
+    <% breadcrumb :new_mypage_group_album, @album.group %>
+    <%= render 'shared/page_title', title: 'アルバム作成' %>
+    <div class="container mx-auto py-8">
+        <%= render 'mypage/albums/album_form', url: mypage_group_albums_path(group_id: @album.group.id), button_text: "作成する" %>
+    </div>
+</div>

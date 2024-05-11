@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_many :groups, through: :group_members
   has_many :albums, through: :groups
   has_many :media_items, through: :albums
+  has_many :media_item_comments, dependent: :destroy
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|

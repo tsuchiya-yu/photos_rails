@@ -20,7 +20,51 @@
             </section>
             <%= render 'shared/list_item', title: '' %>
         <% end %>
-        <%# TODO: 実装する %>
-        <%= render 'shared/add_action_label', text: 'メンバーを招待する' %>
+        <div id='js-ionvite' class='w-fit cursor-pointer'>
+            <%= render 'shared/add_action_label', text: 'メンバーを招待する' %>
+        </div>
     </div>
 </div>
+
+<!-- モーダル -->
+<div id="inviteModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white rounded-lg shadow-lg p-8 max-w-lg w-full">
+        <h2 class="text-xl font-bold mb-4">メンバーを招待する</h2>
+        <p class="mb-4">招待する人に以下のURLを共有してください ※LINEのアカウントが必要です。</p>
+        <input type="email" id="inviteEmail" class="border rounded-lg w-full p-2 mb-4" value="<%= add_mypage_group_group_member_url(group_id: @group.id, id: Encryption.encrypt(@group.id)) %>">
+        <div class="flex justify-end gap-4">
+            <button id="closeModal" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">閉じる</button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const inviteButton = document.getElementById('js-ionvite');
+    const modal = document.getElementById('inviteModal');
+    const closeModalButton = document.getElementById('closeModal');
+    const inviteEmailInput = document.getElementById('inviteEmail');
+
+    // モーダルを表示する関数
+    function openModal() {
+        modal.classList.remove('hidden');
+        inviteEmailInput.focus();
+    }
+
+    // モーダルを非表示にする関数
+    function closeModal() {
+        modal.classList.add('hidden');
+        inviteEmailInput.value = '';
+    }
+
+    inviteButton.addEventListener('click', openModal);
+    closeModalButton.addEventListener('click', closeModal);
+
+    // エスケープキーでモーダルを閉じる
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+            closeModal();
+        }
+    });
+});
+</script>

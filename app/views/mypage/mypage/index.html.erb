@@ -14,5 +14,9 @@
             <%= render 'shared/add_action_label', text: '新しいグループを作成する' %>
         <% end %>
 
+        <%= form_with url: destroy_user_session_path, class: 'text-right mt-5 text-gray-500', method: :delete, local: true do %>
+            <button type="submit" class='text-sm' onclick="return confirm('ログアウトしてもよろしいですか？')">ログアウト</button>
+        <% end %>
+
     </div>
 </div>

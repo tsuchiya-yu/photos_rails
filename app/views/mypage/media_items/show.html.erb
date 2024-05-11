@@ -1,0 +1,90 @@
+<% content_for :title, "詳細" %>
+<div class='container mx-auto py-8 w-full max-w-xl flex-grow outline-none bg-white'>
+    <% breadcrumb :mypage_group_album_media_item, @media_item %>
+    <div class="bg-no-repeat bg-center relative" style="background-image: url(<%= asset_path('loading.gif') %>);">
+        <% media = @media_item.media || @media_item.thumbnail %>
+        <img class="w-full h-full object-contain" src="<%= rails_blob_path(media) %>" onload="this.parentNode.style.backgroundImage = 'none';" loading="lazy" />
+    </div>
+    <div class='inline-flex w-full justify-end gap-5 mt-5'>
+        <%# ゴミ箱 %>
+        <svg id='js-delete' class='cursor-pointer' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style='width: 24px;'><defs><style>.a {fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 2px;}</style></defs><title>icn_7</title><line class="a" x1="9" y1="12" x2="39" y2="12"/><polyline class="a" points="17 12 20 8 28 8 31 12"/><polyline class="a" points="36 16 34.222 40 13.778 40 12 16"/><g><line class="a" x1="24" y1="18" x2="24" y2="32"/><line class="a" x1="30" y1="18" x2="30" y2="32"/><line class="a" x1="18" y1="18" x2="18" y2="32"/></g></svg>
+        <%# ダウンロード %>
+        <svg id='js-dl' class='cursor-pointer' xmlns="http://www.w3.org/2000/svg" style='width: 24px;' viewBox="0 0 48 48"><defs><style>.cls-1,.cls-2{fill:none;}.cls-2{stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style></defs><title>download_24</title><g id="レイヤー_2" data-name="レイヤー 2"><g id="Rectangle"><rect class="cls-1" width="48" height="48"/></g><g id="icon_data"><polyline class="cls-2" points="6 35 6 42 42 42 42 35"/><line class="cls-2" x1="24" y1="24" x2="24" y2="10"/><line class="cls-2" x1="24" y1="34" x2="35" y2="23"/><line class="cls-2" x1="24" y1="34" x2="13" y2="23"/></g></g></svg>
+    </div>
+
+    <%# コメント一覧 %>
+    <ul id='commentsList' class='list-disc my-5'>
+        <% @media_item.comments.each do |comment| %>
+            <li class='list-none mt-4'><%= comment.comment %></li>
+            <li class='list-none text-sm text-right text-gray-500'><%= comment.user.name %></li>
+        <% end %>
+    </ul>
+
+    <%# コメント入力フォーム %>
+    <form id="commentForm" class='flex items-center gap-2 mt-5'>
+        <input type='text' id='commentInput' class='flex-grow p-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500' placeholder='コメントを追加' />
+        <button type='submit' class='px-3 py-2 bg-red-500 text-white rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-50'>
+            投稿
+        </button>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const downloadButton = document.getElementById('js-dl');
+    const mediaUrl = "<%= rails_blob_path(@media_item.media || @media_item.thumbnail) %>";
+    const mediaFilename = "<%= @media_item.media.filename.to_s %>";
+
+    downloadButton.addEventListener('click', function() {
+        const link = document.createElement('a');
+        link.href = mediaUrl;
+        link.download = mediaFilename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+
+    const commentForm = document.getElementById('commentForm');
+    const commentInput = document.getElementById('commentInput');
+    const commentsList = document.getElementById('commentsList');
+
+    commentForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const comment = commentInput.value.trim();
+
+        if (comment === '') {
+            return;
+        }
+
+        fetch("<%= api_v1_album_media_item_media_item_comments_path(group_id: @media_item.group.id, album_id: @media_item.album.id, media_item_id: @media_item) %>", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ media_item_comment: { comment: comment } })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.id) {
+                const newComment = document.createElement('li');
+                newComment.textContent = data.comment;
+                newComment.classList.add('list-none', 'mt-4');
+                commentsList.appendChild(newComment);
+
+                const newCommentUser = document.createElement('li');
+                newCommentUser.textContent = "<%= current_user.name %>";
+                newCommentUser.classList.add('list-none', 'text-sm', 'text-right', 'text-gray-500');
+                commentsList.appendChild(newCommentUser);
+
+                commentInput.value = '';
+            } else {
+                console.error('Error:', data);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+});
+</script>

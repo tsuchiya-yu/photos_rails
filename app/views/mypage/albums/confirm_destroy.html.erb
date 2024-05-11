@@ -1,0 +1,41 @@
+<% content_for :title, '削除' %>
+<div class='container mx-auto py-8 w-full max-w-xl flex-grow outline-nones'>
+    <% breadcrumb :confirm_destroy_mypage_group_album, @album %>
+    <%= render 'shared/page_title', title: '削除' %>
+
+    <div class='my-8 text-error-red font-bold'>
+        <p>※投稿された写真・動画は全て削除されて復元することはできません</p>
+        <p>※この操作は取り消すことができません</p>
+    </div>
+
+    <p>「<%= @album.name %>」と入力してください</p>
+    <div class="flex items-center bg-primary-default rounded border-0 cursor-text relative w-full">
+        <%= text_field_tag 'js-confirm-name', nil, required: true, placeholder: @album.name, class: 'block w-full text-base leading-snug text-gray-700 bg-transparent p-4', id: 'js-confirm-name' %>
+        <fieldset class="absolute inset-0 m-0 p-0 border border-transparent pointer-events-none"></fieldset>
+    </div>
+
+    <div class='my-8'></div>
+
+    <%= form_with model: @album, url: mypage_group_album_path(group_id: @album.group.id, id: @album.id), method: :delete do |form| %>
+        <%= render 'shared/input_button', button_text: '削除する', disabled: true, button_id: 'js-delete-button', form: form %>
+    <% end %>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const inputField = document.getElementById('js-confirm-name');
+    const deleteButton = document.getElementById('js-delete-button');
+    const albumName = "<%= @album.name %>";
+
+    inputField.addEventListener('input', function() {
+        if(inputField.value === albumName) {
+            deleteButton.disabled = false;
+            deleteButton.classList.remove('opacity-70');
+        } else {
+            deleteButton.disabled = true;
+            deleteButton.classList.add('opacity-70');
+        }
+    });
+});
+
+</script>
