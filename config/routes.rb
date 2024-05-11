@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: {
+    sessions: 'users/sessions',
     omniauth_callbacks: 'users/omniauth_callbacks',
   }
 
@@ -12,7 +13,10 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
-  get "/sample" => "sample#index", as: :sample
+  # TODO: 色々試したい場合はこのページを使う
+  # get "/sample" => "sample#index", as: :sample
+
+  get "/" => redirect("/users/sign_in")
 
   namespace :mypage do
     get "/" => "mypage#index"
@@ -20,13 +24,16 @@ Rails.application.routes.draw do
       member do
         get 'confirm_destroy' # 削除前確認画面
       end
-      # resources :group_members, only: [:index, :new, :create, :show, :edit, :update, :destroy]
-      resources :group_members, only: [:index]
+      resources :group_members, only: [:index] do
+        member do
+          get 'add'
+        end
+      end
       resources :albums, only: [:new, :create, :show, :edit, :update, :destroy] do
         member do
           get 'confirm_destroy'  # 削除前確認画面
         end
-        resources :media_items, only: [:new]
+        resources :media_items, only: [:new, :show]
       end
     end
   end
@@ -34,7 +41,9 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :albums do
-        resources :media_items, only: [:create, :destroy]
+        resources :media_items, only: [:create, :destroy] do
+          resources :media_item_comments, only: [:create, :destroy]
+        end
       end
     end
   end

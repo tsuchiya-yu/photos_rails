@@ -48,6 +48,12 @@ crumb :confirm_destroy_mypage_group_album do |album|
 end
 
 crumb :new_mypage_group_album_media_item do |album|
-  link "動画・写真の追加", new_mypage_group_album_media_item_path(group_id: album.group.id, album_id: album.id)
+  link "動画・写真の追加",
+new_mypage_group_album_media_item_path(group_id: album.group.id, album_id: album.id)
   parent :mypage_group_album, album
+end
+
+crumb :mypage_group_album_media_item do |media_item|
+  link "詳細", mypage_group_album_media_item_path(group_id: media_item.group.id, album_id: media_item.album.id, id: media_item.id)
+  parent :mypage_group_album, media_item.album
 end

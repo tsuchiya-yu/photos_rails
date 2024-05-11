@@ -11,3 +11,6 @@ AllCops:
     - 'config/spring.rb'
     - 'vendor/**/*'
     - 'Gemfile'
+
+Metrics/LineLength:
+  Max: 130
