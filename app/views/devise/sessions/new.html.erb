@@ -1,26 +1,15 @@
-<h2>Log in</h2>
-
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
-    </div>
+<% content_for :title, 'ログイン' %>
+<div class='container mx-auto py-8 w-full max-w-xl flex-grow outline-none'>
+  <%= render 'shared/page_title', title: 'ログイン' %>
+  <%= link_to user_line_omniauth_authorize_path, class: 'flex items-center justify-between gap-2 px-4 py-3 bg-white border rounded-lg text-black mt-6' do %>
+      <img src="<%= asset_path('line_btn.png') %>" alt="LINE" class="w-6 h-6">
+      <span class="font-bold mx-auto">LINEでログイン</span>
   <% end %>
-
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+  <hr class='my-6'>
+  <p class='text-center text-gray-500 mb-4'>アカウントをお持ちでない方</p>
+  <%= link_to user_line_omniauth_authorize_path do %>
+      <div class="actions">
+        <div class= "w-full bg-red-600 text-white border-0 rounded px-4 py-3 flex items-center justify-center text-center whitespace-nowrap leading-snug cursor-pointe">新規会員登録</div>
+      </div>
+  <% end %>
+</div>
