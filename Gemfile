@@ -83,3 +83,5 @@ gem 'rails-i18n'
 gem 'gretel'
 gem 'image_processing'
 gem 'streamio-ffmpeg'
+gem "dockerfile-rails", ">= 1.6", :group => :development
+gem "aws-sdk-s3", require: false
