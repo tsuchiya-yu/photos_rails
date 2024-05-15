@@ -31,14 +31,20 @@ RUN yarn install --production
 # Copy the current directory contents into the container
 COPY . .
 
-# Set production environment variable
-ENV RAILS_ENV=production
-
-# Precompile assets
-RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
+# Precompile assets for production
+ARG RAILS_ENV=production
+ENV RAILS_ENV=${RAILS_ENV}
+RUN echo "RAILS_ENV : $RAILS_ENV"
+RUN if [ "$RAILS_ENV" = "production" ]; then \
+      SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile; \
+    fi
 
 # Expose port 3000
 EXPOSE 3000
 
-# Start server
-CMD ["rails", "server", "-b", "0.0.0.0"]
+# Start server based on environment
+CMD if [ "$RAILS_ENV" = "production" ]; then \
+      rails server -b 0.0.0.0; \
+    else \
+      ./bin/dev; \
+    fi
