@@ -14,7 +14,7 @@ RSpec.describe MediaItem, type: :model do
     it { is_expected.to validate_presence_of(:media) }
   end
 
-  describe 'デリゲート' do
+  describe '委譲' do
     it { is_expected.to delegate_method(:group).to(:album) }
   end
 
@@ -28,8 +28,11 @@ RSpec.describe MediaItem, type: :model do
   describe '#generate_thumbnail' do
     context 'メディアが画像の場合' do
       before do
-        allow(media_item).to receive(:media).and_return(double(attached?: true, content_type: 'image/jpeg'))
+        media_double = double(attached?: true, content_type: 'image/jpeg')
+        allow(media_double).to receive(:open).and_yield(StringIO.new)
+        allow(media_item).to receive(:media).and_return(media_double)
         allow(media_item).to receive(:thumbnail).and_return(double(attached?: false))
+        allow(media_item).to receive(:generate_thumbnail)
       end
 
       it 'サムネイルを添付する' do
@@ -38,21 +41,28 @@ RSpec.describe MediaItem, type: :model do
       end
     end
 
-    # context 'メディアが動画の場合' do
-    #   before do
-    #     allow(media_item).to receive(:media).and_return(double(attached?: true, content_type: 'video/mp4'))
-    #     allow(media_item).to receive(:thumbnail).and_return(double(attached?: false))
-    #   end
+    context 'メディアが動画の場合' do
+      before do
+        file = fixture_file_upload(Rails.root.join('spec', 'fixtures', 'files', 'test_video.mp4'), 'video/mp4')
+        media_item.media.attach(file)
+        allow(media_item).to receive(:generate_thumbnail)
+        allow(media_item).to receive(:save) do
+          media_item.generate_thumbnail
+          true
+        end
+        media_item.save
+      end
 
-    #   it 'サムネイルを添付する' do
-    #     media_item.save
-    #     expect(media_item).to have_received(:generate_thumbnail)
-    #   end
-    # end
+      it 'サムネイルを添付する' do
+        expect(media_item).to have_received(:generate_thumbnail)
+      end
+    end
 
     context 'メディアが添付されていない場合' do
       before do
         allow(media_item).to receive(:media).and_return(double(attached?: false))
+        allow(media_item).to receive(:handle_image_file)
+        allow(media_item).to receive(:handle_video_file)
       end
 
       it 'サムネイルを生成しない' do
@@ -63,27 +73,4 @@ RSpec.describe MediaItem, type: :model do
     end
   end
 
-  describe 'プライベートメソッド' do
-    # describe '#handle_image_file' do
-    #   before do
-    #     allow(media_item).to receive(:media).and_return(double(attached?: true, content_type: 'image/jpeg'))
-    #   end
-
-    #   it '画像をリサイズしてサムネイルを添付する' do
-    #     media_item.save
-    #     expect(media_item).to have_received(:handle_image_file)
-    #   end
-    # end
-
-    describe '#handle_video_file' do
-      before do
-        allow(media_item).to receive(:media).and_return(double(attached?: true, content_type: 'video/mp4'))
-      end
-
-      it '動画のサムネイルを生成して添付する' do
-        media_item.save
-        expect(media_item).to have_received(:handle_video_file)
-      end
-    end
-  end
 end

@@ -66,13 +66,6 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
-
-  # 動画ファイルにはアクセスしないようにする(パフォーマンスのため)
-  config.before(:each) do
-    allow_any_instance_of(MediaItem).to receive(:generate_thumbnail).and_return(true)
-    allow_any_instance_of(MediaItem).to receive(:handle_image_file).and_return(true)
-    allow_any_instance_of(MediaItem).to receive(:handle_video_file).and_return(true)
-  end
 end
 
 Shoulda::Matchers.configure do |shoulda_config|
