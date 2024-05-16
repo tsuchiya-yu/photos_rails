@@ -8,3 +8,5 @@ app:
 	docker compose exec web bash
 rubocop:
 	bundle exec rubocop -c .rubocop.yml --require rubocop-airbnb -a
+rspec:
+	RAILS_ENV=test bundle exec rspec

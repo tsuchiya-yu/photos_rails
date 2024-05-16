@@ -7,3 +7,8 @@
 `bundle exec rubocop -c .rubocop.yml --require rubocop-airbnb -a`
 もしくはwebコンテナ内で
 `make rubocop`
+
+## rspec
+`RAILS_ENV=test bundle exec rspec`
+もしくはwebコンテナ内で
+`make rspec`
