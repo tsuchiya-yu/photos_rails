@@ -32,6 +32,7 @@ class MediaItem < ApplicationRecord
   def handle_video_file
     media.open(tmpdir: Rails.root.join('tmp')) do |file|
       generate_video_thumbnail(file)
+      convert_to_mp4(file)
     end
   end
 
@@ -54,7 +55,7 @@ class MediaItem < ApplicationRecord
 
     movie = FFMPEG::Movie.new(file.path)
     screenshot_path = "#{Rails.root.join('tmp')}/screenshot.jpg"
-    movie.screenshot(screenshot_path, { seek_time: 10 })
+    movie.screenshot(screenshot_path, { seek_time: 1 })
 
     processed_image_path = ImageProcessing::MiniMagick.
       source(screenshot_path).
@@ -67,4 +68,20 @@ class MediaItem < ApplicationRecord
       content_type: 'image/jpeg'
     )
   end
+
+  def convert_to_mp4(file)
+    require 'streamio-ffmpeg'
+  
+    movie = FFMPEG::Movie.new(file.path)
+    mp4_path = "#{Rails.root.join('tmp')}/#{media.filename.base}.mp4"
+    options = { video_codec: 'libx264', custom: %w(-crf 23 -preset ultrafast) }
+    movie.transcode(mp4_path, options)
+  
+    media.attach(
+      io: File.open(mp4_path),
+      filename: "#{media.filename.base}.mp4",
+      content_type: 'video/mp4'
+    )
+  end
+
 end
