@@ -2,8 +2,15 @@
 <div class='container mx-auto py-8 w-full max-w-xl flex-grow outline-none bg-white'>
     <% breadcrumb :mypage_group_album_media_item, @media_item %>
     <div class="bg-no-repeat bg-center relative" style="background-image: url(<%= asset_path('loading.gif') %>);">
-        <% media = @media_item.media || @media_item.thumbnail %>
+    <% media = @media_item.media || @media_item.thumbnail %>
+    <% if media.content_type.start_with? 'video' %>
+        <video class="w-full h-full object-contain" controls>
+            <source src="<%= rails_blob_path(media) %>" type="<%= media.content_type %>">
+            Your browser does not support the video tag.
+        </video>
+    <% else %>
         <img class="w-full h-full object-contain" src="<%= rails_blob_path(media) %>" onload="this.parentNode.style.backgroundImage = 'none';" loading="lazy" />
+    <% end %>
     </div>
     <div class='inline-flex w-full justify-end gap-5 mt-5'>
         <%# ゴミ箱 %>

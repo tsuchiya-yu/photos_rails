@@ -43,8 +43,8 @@ class MediaItem < ApplicationRecord
 
     thumbnail.attach(
       io: File.open(resized_image.path),
-      filename: "thumb_#{media.filename}",  # `media.filename.to_s` でメディアのオリジナル名を保持
-      content_type: 'image/jpeg' # サムネイルはJPEG形式で統一
+      filename: "thumb_#{media.filename}",
+      content_type: 'image/jpeg'
     )
   end
 
@@ -54,7 +54,7 @@ class MediaItem < ApplicationRecord
 
     movie = FFMPEG::Movie.new(file.path)
     screenshot_path = "#{Rails.root.join('tmp')}/screenshot.jpg"
-    movie.screenshot(screenshot_path, { seek_time: 10 })
+    movie.screenshot(screenshot_path, seek_time: 10)
 
     processed_image_path = ImageProcessing::MiniMagick.
       source(screenshot_path).
@@ -63,7 +63,7 @@ class MediaItem < ApplicationRecord
 
     thumbnail.attach(
       io: File.open(processed_image_path),
-      filename: "thumb_#{media.filename}.jpg",  # `media.filename.to_s` を使用
+      filename: "thumb_#{media.filename}.jpg",
       content_type: 'image/jpeg'
     )
   end
