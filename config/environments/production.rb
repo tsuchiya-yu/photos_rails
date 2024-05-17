@@ -97,4 +97,5 @@ Rails.application.configure do
 
   # TODO: こっちにする
   # config.active_storage.service = :amazon
+  config.active_storage.paths.temp = Rails.root.join('tmp', 'storage')
 end
