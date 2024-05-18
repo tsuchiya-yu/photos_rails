@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :album do
-    name { "Test Album" }
-    group
+    sequence(:name) { |n| "Album #{n}" }
+    association :group
   end
 end

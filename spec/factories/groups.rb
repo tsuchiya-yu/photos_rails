@@ -1,5 +1,10 @@
 FactoryBot.define do
   factory :group do
-    name { "Test Group" }
+    sequence(:name) { |n| "Group #{n}" }
+
+    # グループを作成するときに、関連するユーザーとグループメンバーも作成
+    after(:create) do |group|
+      create(:group_member, group: group)
+    end
   end
 end

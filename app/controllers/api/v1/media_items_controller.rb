@@ -1,33 +1,35 @@
 class Api::V1::MediaItemsController < ApplicationController
-  def create
-    @album = current_user.albums.find(params[:album_id])
-    params[:media_item][:media].each do |file|
-      @media_item = @album.media_items.new(media: file)
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
-      unless @media_item.save
-        render json: @media_item.errors, status: :unprocessable_entity
+  def create
+    album = current_user.albums.find(params[:album_id])
+    media_items = []
+
+    if params[:media_item].blank? || params[:media_item][:media].blank?
+      render json: { error: 'ファイルが選択されていません' }, status: :unprocessable_entity
+      return
+    end
+
+    params[:media_item][:media].each do |file|
+      media_item = album.media_items.new(media: file)
+
+      unless media_item.save
+        render json: media_item.errors, status: :unprocessable_entity
         return
       end
+
+      media_items << media_item
     end
 
-    if @media_item.save
-      render json: {
-        id: @media_item.id,
-        filename: @media_item.media.filename,
-        thumbnail_url: rails_blob_path(@media_item.thumbnail),
-      }, status: :created
-    else
-      render json: @media_item.errors, status: :unprocessable_entity
-    end
+    render json: MediaItemSerializer.new(media_items).serializable_hash.to_json, status: :created
   end
 
   def destroy
     media_item = current_user.media_items.find(params[:id])
 
     if media_item.destroy
-      render json: media_item, status: :created
+      render json: MediaItemSerializer.new(media_item).serializable_hash.to_json, status: :created
     else
-      # TODO: resourceで返却したい。
       render json: media_item.errors, status: :unprocessable_entity
     end
   end
@@ -36,5 +38,9 @@ class Api::V1::MediaItemsController < ApplicationController
 
   def media_item_params
     params.require(:media_item).permit(media: [])
+  end
+
+  def record_not_found
+    render json: { error: 'データが存在しません' }, status: :unprocessable_entity
   end
 end

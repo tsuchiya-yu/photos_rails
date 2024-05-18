@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
-  # TODO: 色々試したい場合はこのページを使う
+  # MEMO: 色々試したい場合はこのページを使う
   # get "/sample" => "sample#index", as: :sample
 
   get "/" => redirect("/users/sign_in")
