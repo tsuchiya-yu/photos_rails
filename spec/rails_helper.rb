@@ -31,6 +31,8 @@ rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
 RSpec.configure do |config|
+  config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include Devise::Test::IntegrationHelpers, type: :request
   config.include FactoryBot::Syntax::Methods
   config.include ActionDispatch::TestProcess
 
@@ -66,6 +68,17 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # ActiveJobのキューアダプタをtestに設定
+  config.before(:each) do
+    ActiveJob::Base.queue_adapter = :test
+  end
+
+  # ActiveStorageの分析ジョブをスキップ
+  config.before(:each) do
+    allow(ActiveStorage::AnalyzeJob).to receive(:perform_later)
+    allow(ActiveStorage::AnalyzeJob).to receive(:perform_now)
+  end
 end
 
 Shoulda::Matchers.configure do |shoulda_config|
