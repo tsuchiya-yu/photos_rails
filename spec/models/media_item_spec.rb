@@ -14,7 +14,7 @@ RSpec.describe MediaItem, type: :model do
     it { is_expected.to validate_presence_of(:media) }
   end
 
-  describe '委譲' do
+  describe 'デリゲート' do
     it { is_expected.to delegate_method(:group).to(:album) }
   end
 
@@ -72,5 +72,4 @@ RSpec.describe MediaItem, type: :model do
       end
     end
   end
-
 end

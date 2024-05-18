@@ -71,17 +71,16 @@ class MediaItem < ApplicationRecord
 
   def convert_to_mp4(file)
     require 'streamio-ffmpeg'
-  
+
     movie = FFMPEG::Movie.new(file.path)
     mp4_path = "#{Rails.root.join('tmp')}/#{media.filename.base}.mp4"
     options = { video_codec: 'libx264', custom: %w(-crf 23 -preset ultrafast) }
     movie.transcode(mp4_path, options)
-  
+
     media.attach(
       io: File.open(mp4_path),
       filename: "#{media.filename.base}.mp4",
       content_type: 'video/mp4'
     )
   end
-
 end

@@ -1,10 +1,10 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def line
-    @user = User.find_or_create_from_line(auth)
+    user = User.find_or_create_from_line(auth)
 
-    if @user.persisted?
+    if user.persisted?
       # ユーザーがデータベースに存在している場合
-      sign_in_and_redirect @user, event: :authentication
+      sign_in_and_redirect user, event: :authentication
       set_flash_message(:notice, :success, kind: "LINE") if is_navigational_format?
     else
       # ユーザーが保存できなかった場合

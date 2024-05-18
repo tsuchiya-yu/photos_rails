@@ -3,11 +3,11 @@ class Mypage::MypageApplicationController < ApplicationController
   before_action :check_login
 
   # デバッグのためのログイン
-  # TODO: 不要になったら消す
+  # MEMO: 開発中にログインが面倒な時はコメントアウトを外してください
   def debug_login
-    return unless Rails.env.development?
-    user = User.first
-    sign_in(user)
+    # return unless Rails.env.development?
+    # user = User.first
+    # sign_in(user)
   end
 
   def check_login
