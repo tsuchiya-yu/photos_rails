@@ -44,7 +44,7 @@ class MediaItem < ApplicationRecord
 
     thumbnail.attach(
       io: File.open(resized_image.path),
-      filename: "thumb_#{media.filename}",  # `media.filename.to_s` でメディアのオリジナル名を保持
+      filename: "thumb_#{media.filename}",
       content_type: 'image/jpeg' # サムネイルはJPEG形式で統一
     )
   end
