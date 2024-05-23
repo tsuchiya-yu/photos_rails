@@ -8,16 +8,16 @@ LINE DevelopersからLINEログインを有効にして
 - ドメイン/ポート`http://localhost:3000`
 
 ## rubocop
-`bundle exec rubocop -c .rubocop.yml --require rubocop-airbnb -a`
-もしくはwebコンテナ内で
-`make rubocop`
+`bundle exec rubocop -c .rubocop.yml --require rubocop-airbnb -a`  
+もしくはwebコンテナ内で  
+`make rubocop`  
 
 ## rspec
-`RAILS_ENV=test bundle exec rspec`
-もしくはwebコンテナ内で
-`make rspec`
+`RAILS_ENV=test bundle exec rspec`  
+もしくはwebコンテナ内で  
+`make rspec`  
 
 ## デプロイ(fly.io)
-`flyctl deploy`
-画面を開くには
+`flyctl deploy`  
+画面を開くには  
 `flyctl open`
