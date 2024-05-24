@@ -14,8 +14,8 @@ services:
       - .:/photos_rails
       - bundle:/usr/local/bundle
       - node_modules:/photos_rails/node_modules
-      - public-data:/photos_rails/public
-      - tmp-data:/photos_rails/tmp
+      - ./public:/photos_rails/public
+      - ./tmp:/photos_rails/tmp
     ports:
       - "3000:3000"
       - "35729:35729"
@@ -41,5 +41,3 @@ volumes:
     driver: local
   node_modules:
     driver: local
-  public-data:
-  tmp-data:
