@@ -21,6 +21,10 @@ class Mypage::AlbumsController < Mypage::MypageApplicationController
 
   def confirm_destroy
     @album = current_user.albums.find(params[:id])
+    unless current_user.this_group_master?(@album.group.id)
+      redirect_to mypage_group_album_path(group_id: @album.group.id, id: @album.id),
+alert: 'オーナーのみが可能な操作です'
+    end
   end
 
   def edit
@@ -38,6 +42,10 @@ class Mypage::AlbumsController < Mypage::MypageApplicationController
 
   def destroy
     @album = current_user.albums.find(params[:id])
+    unless current_user.this_group_master?(@album.group.id)
+      redirect_to mypage_group_album_path(group_id: @album.group.id, id: @album.id),
+alert: 'オーナーのみが可能な操作です'
+    end
     @album.destroy!
     redirect_to mypage_group_path(id: @album.group.id), notice: 'アルバムを削除しました'
   end

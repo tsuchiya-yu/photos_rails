@@ -31,10 +31,12 @@ class Mypage::GroupsController < Mypage::MypageApplicationController
 
   def confirm_destroy
     @group = current_user.groups.find(params[:id])
+    redirect_to mypage_group_path(@group), alert: 'オーナーのみが可能な操作です' unless current_user.this_group_master?(@group.id)
   end
 
   def destroy
     @group = current_user.groups.find(params[:id])
+    redirect_to mypage_group_path(@group), alert: 'オーナーのみが可能な操作です' unless current_user.this_group_master?(@group.id)
     @group.destroy!
     redirect_to mypage_path, notice: 'グループを削除しました'
   end

@@ -35,4 +35,10 @@ class User < ApplicationRecord
     end
     user
   end
+
+  # このグループのマスター？
+  def this_group_master?(group_id)
+    return false if group_id.blank?
+    group_members.where(group_id: group_id, is_master: true).exists?
+  end
 end
