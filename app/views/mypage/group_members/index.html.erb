@@ -30,8 +30,9 @@
 <div id="inviteModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
     <div class="bg-white rounded-lg shadow-lg p-8 max-w-lg w-full">
         <h2 class="text-xl font-bold mb-4">メンバーを招待する</h2>
-        <p class="mb-4">招待する人に以下のURLを共有してください ※LINEのアカウントが必要です。</p>
-        <input type="email" id="inviteEmail" class="border rounded-lg w-full p-2 mb-4" value="<%= add_mypage_group_group_member_url(group_id: @group.id, id: Encryption.encrypt(@group.id)) %>">
+        <p>招待する人に以下のURLを共有してください</p>
+        <p class="mb-4">※LINEのアカウントが必要です。</p>
+        <input type="email" id="inviteEmail" class="border rounded-lg w-full p-2 mb-4" readonly value="<%= add_mypage_group_group_member_url(group_id: @group.id, id: Encryption.encrypt(@group.id)) %>">
         <div class="flex justify-end gap-4">
             <button id="closeModal" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">閉じる</button>
         </div>
@@ -54,11 +55,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // モーダルを非表示にする関数
     function closeModal() {
         modal.classList.add('hidden');
-        inviteEmailInput.value = '';
+    }
+
+    // テキストをクリップボードにコピーする関数
+    function copyToClipboard() {
+        inviteEmailInput.select();
+        document.execCommand('copy');
+        alert('コピーしました');
     }
 
     inviteButton.addEventListener('click', openModal);
     closeModalButton.addEventListener('click', closeModal);
+    inviteEmailInput.addEventListener('click', copyToClipboard);
 
     // エスケープキーでモーダルを閉じる
     document.addEventListener('keydown', function(e) {

@@ -2,8 +2,8 @@ ja:
   devise:
     omniauth_callbacks:
       user:
-        success: "ようこそ！"
-      success: "ようこそ！"
+        success: "ようこそ"
+      success: "ようこそ"
     sessions:
       signed_in: "ログインしました。"
       signed_out: "ログアウトしました。"

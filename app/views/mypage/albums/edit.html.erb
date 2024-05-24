@@ -3,6 +3,6 @@
     <% breadcrumb :edit_mypage_group_album, @album %>
     <%= render 'shared/page_title', title: '編集' %>
     <div class="container mx-auto py-8">
-        <%= render 'mypage/albums/album_form', url: mypage_group_album_path(group_id: @album.group.id, id: @album.id), button_text: "編集する" %>
+        <%= render 'mypage/albums/album_form', url: mypage_group_album_path(group_id: @album.group.id, id: @album.id), button_text: "更新する" %>
     </div>
 </div>
