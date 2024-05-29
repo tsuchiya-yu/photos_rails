@@ -17,7 +17,7 @@ class Mypage::GroupMembersController < Mypage::MypageApplicationController
     return redirect_to mypage_group_path(id: group.id), notice: 'すでに参加しています' if exists
 
     # グループメンバーに参加
-    group.group_members.create(user: current_user)
+    group.group_members.create(user: current_user, is_master: false)
     redirect_to mypage_group_path(id: @group.id), notice: '参加しました'
   end
 end
