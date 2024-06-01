@@ -38,6 +38,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // タウンロード
     const downloadButton = document.getElementById('js-dl');
     const mediaUrl = "<%= rails_blob_path(@media_item.media || @media_item.thumbnail) %>";
     const mediaFilename = "<%= @media_item.media.filename.to_s %>";
@@ -51,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.removeChild(link);
     });
 
+    // コメント
     const commentForm = document.getElementById('commentForm');
     const commentInput = document.getElementById('commentInput');
     const commentsList = document.getElementById('commentsList');
@@ -92,6 +94,30 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error('Error:', error);
         });
+    });
+
+    // 画像削除
+    const deleteButton = document.getElementById('js-delete');
+    deleteButton.addEventListener('click', function() {
+      if (!confirm('画像を削除してよろしいですか？')) {
+        return;
+      }
+
+      const url = `<%= api_v1_album_media_item_path(album_id: @media_item.album.id, id: @media_item.id) %>`;
+      fetch(url, {
+          method: 'DELETE',
+          headers: {
+              'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          }
+      })
+      .then(response => {
+          if (response.ok) {
+              location.href = `<%= mypage_group_album_path(group_id: @media_item.group.id, id: @media_item.album.id) %>`;
+          } else {
+              alert('画像の削除に失敗しました.時間をおいて再度お試しください.');
+          }
+      })
+      .catch(error => console.error('Error:', error));
     });
 });
 </script>
