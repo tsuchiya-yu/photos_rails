@@ -9,5 +9,9 @@
   },
   "scripts": {
     "build:css": "sass ./app/assets/stylesheets/application.tailwind.css ./app/assets/builds/application.css --no-source-map"
+  },
+  "devDependencies": {
+    "@prettier/plugin-ruby": "^4.0.4",
+    "prettier": "^3.2.5"
   }
 }
