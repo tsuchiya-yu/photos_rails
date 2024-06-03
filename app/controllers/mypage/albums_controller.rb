@@ -16,7 +16,7 @@ class Mypage::AlbumsController < Mypage::MypageApplicationController
     @album = current_user.albums.
       includes(media_items: { thumbnail_attachment: :blob }).
       find(params[:id])
-    @media_items = @album.media_items.order(id: :desc)
+    @media_items = @album.media_items.includes(thumbnail_attachment: :blob, media_attachment: :blob).order(id: :desc)
   end
 
   def confirm_destroy
