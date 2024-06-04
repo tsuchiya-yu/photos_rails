@@ -8,6 +8,9 @@ ja:
       signed_in: "ログインしました。"
       signed_out: "ログアウトしました。"
       already_signed_in: "すでにログインしています。"
+    failure:
+      user:
+        already_authenticated: "すでにログインしています。"
   activerecord:
     models:
       user: 'ユーザー'
