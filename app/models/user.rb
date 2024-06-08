@@ -23,7 +23,7 @@ class User < ApplicationRecord
     user = User.find_by(uid: auth_info.uid, provider: auth_info.provider)
 
     unless user
-      email = auth_info.info.email || "user_#{auth_info.uid}@example.com" # 適当なメアド(現状使わないので)
+      email = auth_info.info.email || "user_#{auth_info.uid}@example.com" # 適当なメアドを入れておく
       user = User.new(
         email: email,
         uid: auth_info.uid,
@@ -41,4 +41,10 @@ class User < ApplicationRecord
     return false if group_id.blank?
     group_members.where(group_id: group_id, is_master: true).exists?
   end
+
+  # ダミーのメールアドレス？
+  def dummy_email?
+    email.start_with?('user_') && email.end_with?('@example.com')
+  end
+
 end

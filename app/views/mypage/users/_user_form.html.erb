@@ -1,0 +1,8 @@
+<%= form_with model: current_user, url: url, local: true do |form| %>
+    <%= render 'shared/input_form_text', form: form, field: :email, field_label: "メールアドレス", field_required: true, placeholder: 'hanako@example.com' %>
+    <div class="text-left text-error-red text-sm mb-8" style='margin-top: -24px;'>
+        必ず連絡のつくメールアドレスを設定してください。連絡がつかない場合、アカウントを停止する可能性があります。
+    </div>
+    <%= render 'shared/input_form_text', form: form, field: :name, field_label: "なまえ", field_required: true, placeholder: 'はなこ' %>
+    <%= render 'shared/input_button', button_text: button_text, form: form %>
+<% end %>

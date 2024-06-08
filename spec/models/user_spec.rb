@@ -116,4 +116,41 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe 'ダミーメールアドレス判定' do
+    let(:user) { User.new(email: email) }
+
+    context 'メールアドレスがuser_で始まり@example.comで終わる場合' do
+      let(:email) { 'user_123@example.com' }
+
+      it 'trueを返す' do
+        expect(user.dummy_email?).to be true
+      end
+    end
+
+    context 'メールアドレスがuser_で始まらない場合' do
+      let(:email) { 'test_user_123@example.com' }
+
+      it 'falseを返す' do
+        expect(user.dummy_email?).to be false
+      end
+    end
+
+    context 'メールアドレスが@example.comで終わらない場合' do
+      let(:email) { 'user_123@sample.com' }
+
+      it 'falseを返す' do
+        expect(user.dummy_email?).to be false
+      end
+    end
+
+    context 'メールアドレスがuser_で始まらず@example.comで終わらない場合' do
+      let(:email) { 'test_user_123@sample.com' }
+
+      it 'falseを返す' do
+        expect(user.dummy_email?).to be false
+      end
+    end
+  end
+
 end

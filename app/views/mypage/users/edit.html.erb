@@ -1,0 +1,8 @@
+<% content_for :title, "会員情報変更" %>
+<div class='container mx-auto py-8 w-full max-w-xl flex-grow outline-nones'>
+    <% breadcrumb :edit_mypage_users %>
+    <%= render 'shared/page_title', title: "会員情報変更" %>
+    <div class="container mx-auto py-8">
+        <%= render 'mypage/users/user_form', url: mypage_users_path(current_user), button_text: "更新する" %>
+    </div>
+</div>

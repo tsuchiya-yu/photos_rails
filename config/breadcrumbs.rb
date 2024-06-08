@@ -57,3 +57,8 @@ crumb :mypage_group_album_media_item do |media_item|
   link "詳細", mypage_group_album_media_item_path(group_id: media_item.group.id, album_id: media_item.album.id, id: media_item.id)
   parent :mypage_group_album, media_item.album
 end
+
+crumb :edit_mypage_users do
+  link "会員情報変更", edit_mypage_users_path
+  parent :mypage
+end
