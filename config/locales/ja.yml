@@ -25,3 +25,10 @@ ja:
         invalid: "%{attribute}が正しくありません"
         blank: "%{attribute}を入力してください"
         too_short: "%{attribute}は%{count}文字以上で入力してください"
+  date:
+    day_names: ["日", "月", "火", "水", "木", "金", "土"]
+  time:
+    formats:
+      ja_full_day_time: "%Y年%m月%d日 %H時%M分%S秒"
+      ja_full_day_time_with_day_of_week: "%Y年%m月%d日(%a) %H時%M分%S秒"
+      ja_day_time_without_second: "%Y年%m月%d日 %H時%M分"
