@@ -25,6 +25,7 @@ class MediaItem < ApplicationRecord
 
   def handle_image_file
     media.open(tmpdir: Rails.root.join('tmp')) do |file|
+      strip_exif_data(file.path) # EXIF情報を削除
       resize_and_attach_thumbnail(file)
     end
   end
@@ -37,10 +38,10 @@ class MediaItem < ApplicationRecord
   end
 
   def resize_and_attach_thumbnail(file)
-    resized_image = ImageProcessing::MiniMagick.
-      source(file).
-      resize_to_fill(280, 280, gravity: 'Center').
-      call
+    resized_image = ImageProcessing::MiniMagick
+      .source(file)
+      .resize_to_fill(280, 280, gravity: 'Center')
+      .call
 
     thumbnail.attach(
       io: File.open(resized_image.path),
@@ -57,10 +58,10 @@ class MediaItem < ApplicationRecord
     screenshot_path = "#{Rails.root.join('tmp')}/screenshot.jpg"
     movie.screenshot(screenshot_path, { seek_time: 1 })
 
-    processed_image_path = ImageProcessing::MiniMagick.
-      source(screenshot_path).
-      resize_to_fill(280, 280, gravity: 'Center').
-      call
+    processed_image_path = ImageProcessing::MiniMagick
+      .source(screenshot_path)
+      .resize_to_fill(280, 280, gravity: 'Center')
+      .call
 
     thumbnail.attach(
       io: File.open(processed_image_path),
@@ -82,5 +83,11 @@ class MediaItem < ApplicationRecord
       filename: "#{media.filename.base}.mp4",
       content_type: 'video/mp4'
     )
+  end
+
+  def strip_exif_data(image_path)
+    image = MiniMagick::Image.open(image_path)
+    image.strip
+    image.write(image_path)
   end
 end
