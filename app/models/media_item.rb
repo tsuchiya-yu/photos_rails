@@ -86,6 +86,8 @@ class MediaItem < ApplicationRecord
   end
 
   def strip_exif_data(image_path)
+    require 'mini_magick'
+
     image = MiniMagick::Image.open(image_path)
     image.strip
     image.write(image_path)
