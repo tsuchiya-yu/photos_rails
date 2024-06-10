@@ -5,9 +5,9 @@
     <div class="bg-no-repeat bg-center relative" style="background-image: url(<%= asset_path('loading.gif') %>);">
         <% media = @media_item.media || @media_item.thumbnail %>
         <% if media.content_type.start_with? 'video' %>
-            <video class="w-full h-full object-contain" controls onloadeddata="showLoadedAfter()">
-            <source src="<%= rails_blob_path(media) %>" type="<%= media.content_type %>">
-            お使いの環境では動画を再生できません
+            <video class="w-full h-full object-contain" controls playsinline onloadeddata="showLoadedAfter()">
+                <source src="<%= rails_blob_path(media) %>" type="<%= media.content_type %>">
+                お使いの環境では動画を再生できません
             </video>
         <% else %>
             <img class="w-full h-full object-contain" src="<%= rails_blob_path(media) %>" onload="showLoadedAfter()" loading="lazy" />
