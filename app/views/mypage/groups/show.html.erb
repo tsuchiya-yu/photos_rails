@@ -11,20 +11,20 @@
         <%= render 'shared/list_title', title: '設定' %>
         <%= render 'shared/list_item', title: '' %>
         <%= link_to edit_mypage_group_path(@group) do %>
-            <%= render 'shared/list_item', title: '編集する' %>
+            <%= render 'shared/list_item', title: 'グループの編集' %>
         <% end %>
         <% if current_user.this_group_master?(@group.id) %>
             <%= link_to mypage_group_group_members_path(@group) do %>
-                <%= render 'shared/list_item', title: 'メンバーを管理する' %>
+                <%= render 'shared/list_item', title: 'メンバーの管理' %>
             <% end %>
             <%= link_to confirm_destroy_mypage_group_path(@group) do %>
-                <%= render 'shared/list_item', title: '削除する' %>
+                <%= render 'shared/list_item', title: 'グループの削除' %>
             <% end %>
         <% end %>
     </section>
 
     <section class='mb-8'>
-        <%= render 'shared/list_title', title: 'アルバム一覧' %>
+        <%= render 'shared/list_title', title: 'アルバム' %>
         <%= render 'shared/list_item', title: '' %>
         <% @group.albums.each do |album| %>
             <%= link_to mypage_group_album_path(group_id: @group.id, id: album.id) do %>

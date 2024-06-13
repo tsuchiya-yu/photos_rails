@@ -10,17 +10,17 @@
         <%= render 'shared/list_title', title: '設定' %>
         <%= render 'shared/list_item', title: '' %>
         <%= link_to edit_mypage_group_album_path(group_id: @album.group.id, id: @album.id) do %>
-            <%= render 'shared/list_item', title: '編集する' %>
+            <%= render 'shared/list_item', title: 'アルバムの編集' %>
         <% end %>
         <% if current_user.this_group_master?(@album.group.id) %>
             <%= link_to confirm_destroy_mypage_group_album_path(group_id: @album.group.id, id: @album.id) do %>
-                <%= render 'shared/list_item', title: '削除する' %>
+                <%= render 'shared/list_item', title: 'アルバムの削除' %>
             <% end %>
         <% end %>
     </section>
 
     <div class='flex flex-wrap overflow-hidden mb-5'>
-        <% @album.media_items.each do |item| %>
+        <% @media_items.each do |item| %>
             <% media = item.thumbnail || item.media %>
             <% if media.present? %>
                 <div class="w-1/4 object-cover border-2 border-black h-full bg-no-repeat bg-center relative overflow-hidden" style="aspect-ratio: 1 / 1; background-image: url(<%= asset_path('loading.gif') %>);">

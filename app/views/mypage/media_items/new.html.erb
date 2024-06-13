@@ -54,7 +54,8 @@
                 hideLoading();
             }).catch(error => {
                 hideLoading();
-                console.error('Upload failed:', error);
+                console.error('アップロードエラー:', error);
+                alert(`エラーが発生しました。時間をおいてお試しください。エラー：${error.message}`);
             });
         }
 
@@ -74,7 +75,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.thumbnail_url) {
-                        previewElement.querySelector('img').src = data.thumbnail_url; // Update to thumbnail URL
+                        previewElement.querySelector('img').src = data.thumbnail_url;
                     }
                     console.log('Success:', data);
                     resolve(data);
