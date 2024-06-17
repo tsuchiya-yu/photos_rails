@@ -1,5 +1,14 @@
+<style>
+@media (max-width: 960px) {
+    .main-content {
+        min-height: calc(100vh - 90px);
+    }
+}
+</style>
+
+<% content_for :is_index, true %>
 <% content_for :title, 'ログイン' %>
-<div class='container mx-auto py-8 w-full max-w-xl flex-grow outline-none'>
+<div class='container mx-auto py-8 w-full max-w-xl flex-grow outline-none main-content'>
   <%= render 'shared/page_title', title: 'ログイン' %>
   <%= link_to user_line_omniauth_authorize_path, class: 'flex items-center justify-between gap-2 px-4 py-3 bg-white border rounded-lg text-black mt-6' do %>
       <img src="<%= asset_path('line_btn.png') %>" alt="LINE" class="w-6 h-6">
@@ -12,4 +21,10 @@
         <div class= "w-full bg-red-600 text-white border-0 rounded px-4 py-3 flex items-center justify-center text-center whitespace-nowrap leading-snug cursor-pointe">新規会員登録</div>
       </div>
   <% end %>
+  <p class='text-center text-gray-500 my-12'>ログイン・会員登録をもって<%= link_to 'プライバシーポリシー', privacy_path, target: "_blank", class: 'text-link-blue' %>と<%= link_to '利用規約', terms_path, target: "_blank", class: 'text-link-blue' %>に同意したものとみなします</p>
+  <!-- admax -->
+  <aside class='mt-2'>
+    <script src="https://adm.shinobi.jp/s/a92897479972bb5947e754729f8c2c8a"></script>
+  </aside>
+  <!-- admax -->
 </div>
