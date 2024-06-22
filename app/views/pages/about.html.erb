@@ -1,0 +1,173 @@
+<style>
+    .video-background {
+        position: relative;
+        overflow: hidden;
+        width: 100vw;
+        height: 70vh;
+        left: 50%;
+        margin-left: -50vw;
+        margin-top: -150px;
+    }
+    .video-background video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        transform: translate(-50%, -50%);
+        z-index: -1;
+        object-fit: cover;
+        filter: brightness(70%);
+    }
+    .content {
+        position: relative;
+        z-index: 1;
+    }
+    .video-content {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        padding: 10%;
+        color: white;
+    }
+    .accordion-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.2s ease-out;
+    }
+    @media (max-width: 960px) {
+        .video-content {
+            padding-top: 20%;
+        }
+        .video-background {
+            margin-top: -50px;
+            height: 40vh;
+        }
+    }
+</style>
+
+<% content_for :is_index, true %>
+<% content_for :title, 'サービスについて' %>
+<div class='container mx-auto py-8 w-full max-w-xl flex-grow outline-nones'>
+    <div class="video-background">
+        <video src="/videos/key_video.mp4" playsinline autoplay muted loop></video>
+        <div class="video-content text-white md:p-10">
+            <h1 class="md:text-5xl text-3xl font-bold">大切な瞬間を、いつまでも手元に</h1>
+            <p class="mt-6 md:text-xl text-lg">スマホで撮影した写真や動画を簡単に共有・整理。家族とともに、いつでもどこでも思い出を楽しめます。</p>
+        </div>
+    </div>
+
+    <section>
+        <div class="w-full text-center inline-block">
+            <p class='my-12 mb-0 md:text-2xl text-xl'>「家族写真アルバム」は思い出のつまった写真や動画を、大切な家族・仲間と共有するサービスです。</p>
+        </div>
+    </section>
+
+    <%= render 'shared/about/call_to_action' %>
+
+    <section>
+        <div class="container mx-auto py-10">
+            <h2 class="text-center text-2xl font-bold text-gray-900 my-4">４つの特長</h2>
+            <div class="flex justify-center items-center mb-8">
+                <hr class="border-t-2 border-gray-300 w-16">
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <%= render 'shared/about/feature', image_path: 'about/function1.png', alt_text: '無料・無制限にアップロード', title: '無料・無制限にアップロード', description: '保存したい写真を無料・容量無制限にアップロード。写真だけでなく動画も。' %>
+                <%= render 'shared/about/feature', image_path: 'about/function2.png', alt_text: 'グループ機能', title: 'グループ機能', description: 'グループ機能で特定の人とだけ写真を共有できる。あなたの家族と。友人と。' %>
+                <%= render 'shared/about/feature', image_path: 'about/function3.png', alt_text: 'コメント機能', title: 'コメント機能', description: '写真や動画の感想・説明をコメントで残そう。コメントで思い出がもっと楽しくなる。' %>
+                <%= render 'shared/about/feature', image_path: 'about/function4.png', alt_text: 'アルバム機能', title: 'アルバム機能', description: 'アルバムで写真を管理することで楽しかったイベントをいつでも振り返れる' %>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="w-full text-center inline-block">
+            <h3 class='font-bold mt-6 mb-12 text-2xl'>大切な瞬間を、いつまでも手元に</h3>
+            <p>素敵な瞬間はアルバムに残したい。大切な家族・仲間と写真・動画をみんなで共有したい。そして、思い出を楽しく振り返りたい。そんな思いからサービスが誕生しました。スマホで気軽に写真を撮り、それをいつでも持ち歩ける今の時代にふさわしい、新しい形の家族アルバムを提案します。</p>
+        </div>
+    </section>
+
+    <%= render 'shared/about/call_to_action' %>
+
+    <section>
+        <div class="container mx-auto py-10">
+            <h2 class="text-center text-2xl font-bold text-gray-900 my-4">使い方</h2>
+            <div class="flex justify-center items-center mb-8">
+                <hr class="border-t-2 border-gray-300 w-16">
+            </div>
+            <div class="flex space-x-4 overflow-x-auto">
+                <%= render 'shared/about/feature', add_class: 'flex-shrink-0 w-64', image_path: 'about/use1.png', alt_text: '会員登録', title: '１ 会員登録', description: 'LINEを使っていればボタンを押すだけ。すぐに会員登録できます。' %>
+                <%= render 'shared/about/feature', add_class: 'flex-shrink-0 w-64', image_path: 'about/use2.png', alt_text: 'グループの作成', title: '２ グループの作成', description: '写真・動画を共有するグループを作成して、メンバーを招待します。' %>
+                <%= render 'shared/about/feature', add_class: 'flex-shrink-0 w-64', image_path: 'about/use3.png', alt_text: 'アルバムの作成', title: '３ アルバムの作成', description: '写真・動画を保管するためのアルバムを作成します。' %>
+                <%= render 'shared/about/feature', add_class: 'flex-shrink-0 w-64', image_path: 'about/use4.png', alt_text: '写真・動画のアップロード', title: '４ 写真・動画のアップロード', description: '写真・動画をアップロードすることで、グループのメンバーと共有できます。' %>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container mx-auto pt-10">
+            <h2 class="text-center text-2xl font-bold text-gray-900 my-4">よくある質問</h2>
+            <div class="flex justify-center items-center mb-8">
+                <hr class="border-t-2 border-gray-300 w-16">
+            </div>
+            <div class="accordion">
+                <div class="accordion-item border-gray-200 mb-8">
+                    <button class="accordion-header js-accordion-header flex justify-between w-full p-4 text-left text-gray-800 font-semibold bg-gray-100 hover:bg-gray-200 focus:outline-none">
+                        利用料金はいくらですか？
+                        <svg class="js-accordion-arrow w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="accordion-content js-accordion-content p-4 pb-0 text-gray-700 bg-white">
+                        無料でご利用いただけます。お気軽にご利用ください。
+                    </div>
+                </div>
+                <div class="accordion-item border-gray-200 mb-8">
+                    <button class="accordion-header js-accordion-header flex justify-between w-full p-4 text-left text-gray-800 font-semibold bg-gray-100 hover:bg-gray-200 focus:outline-none">
+                        スマホでも利用できますか？／PCでも利用できますか？
+                        <svg class="js-accordion-arrow w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="accordion-content js-accordion-content p-4 pb-0 text-gray-700 bg-white">
+                        スマホ、PCのどちらからでもご利用いただけます。
+                    </div>
+                </div>
+                <div class="accordion-item border-gray-200 mb-8">
+                    <button class="accordion-header js-accordion-header flex justify-between w-full p-4 text-left text-gray-800 font-semibold bg-gray-100 hover:bg-gray-200 focus:outline-none">
+                        画像の枚数や動画のサイズに制限はありますか？
+                        <svg class="js-accordion-arrow w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="accordion-content js-accordion-content p-4 pb-0 text-gray-700 bg-white">
+                        制限はありません。お好きなだけアップロードしてください。ただし、画像の数が多かったり、動画のサイズが大きい場合はアップロードに時間がかかることがあります。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <%= render 'shared/about/call_to_action' %>
+</div>
+
+<script>
+// よくある質問のアコーディオン制御
+document.querySelectorAll('.js-accordion-header').forEach(button => {
+    button.addEventListener('click', () => {
+        const content = button.nextElementSibling;
+        const arrow = button.querySelector('.js-accordion-arrow');
+
+        button.classList.toggle('active');
+        arrow.classList.toggle('rotate-180');
+
+        if (button.classList.contains('active')) {
+            content.style.maxHeight = content.scrollHeight + 'px';
+        } else {
+            content.style.maxHeight = null;
+        }
+    });
+});
+</script>

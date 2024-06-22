@@ -36,8 +36,16 @@ Rails.application.routes.draw do
         resources :media_items, only: [:new, :show]
       end
     end
+    resource :users, only: [:edit, :update] do
+    end
   end
 
+  # 静的ページ
+  get '/privacy', to: 'pages#privacy'
+  get '/terms', to: 'pages#terms'
+  get '/about', to: 'pages#about'
+
+  # API
   namespace :api do
     namespace :v1 do
       resources :albums do

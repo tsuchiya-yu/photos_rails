@@ -1,11 +1,37 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for?(:title) ? yield(:title) : "ファミリーフォトアルバム" %></title>
-     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : '完全無料で写真や動画をアップロード。家族の大切な瞬間をすぐに共有し、リアルタイムで繋がることができます。高速アップロードで特別な記憶を逃さずに。' %>">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z0C8G7FT5"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-9Z0C8G7FT5');
+    </script>
+    <!-- Google tag (gtag.js) -->
+    <!-- Adsense tag -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8102754226679812" crossorigin="anonymous"></script>
+
+    <title><%= content_for?(:title) ? yield(:title) : "家族写真アルバム" %></title>
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : '完全無料で写真や動画をアップロード。家族の大切な瞬間をすぐに共有し、リアルタイムで繋がることができます。高速アップロードで特別な記憶を逃さずに。' %>">
+    <meta name="keywords" content="家族, 仲間, 写真, アルバム, 動画, 共有, 仲間, 思い出">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="robots" content="noindex">
-    <meta name="description" content="完全無料で写真や動画をアップロード。家族の大切な瞬間をすぐに共有し、リアルタイムで繋がることができます。高速アップロードで特別な記憶を逃さずに。">
+    <% unless content_for?(:is_index) %>
+      <meta name="robots" content="noindex">
+    <% end %>
+
+    <meta property="og:title" content="家族写真アルバム | 思い出のつまった写真や動画を、大切な家族・仲間と共有するためのサービス">
+    <meta property="og:description" content="完全無料で写真や動画をアップロード。家族の大切な瞬間をすぐに共有し、リアルタイムで繋がることができます。高速アップロードで特別な記憶を逃さずに。">
+    <meta property="og:url" content="https://family-photo-album.online">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://family-photo-album.online/og-image.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="家族写真アルバム | 思い出のつまった写真や動画を、大切な家族・仲間と共有するためのサービス">
+    <meta name="twitter:description" content="完全無料で写真や動画をアップロード。家族の大切な瞬間をすぐに共有し、リアルタイムで繋がることができます。高速アップロードで特別な記憶を逃さずに。">
+    <meta name="twitter:image" content="https://family-photo-album.online/og-image.png">
 
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -20,16 +46,16 @@
     <style>
       @media (min-width: 960px) {
         .custom-min-height {
-          min-height: calc(-64px + 100vh);
+          min-height: 100vh;
         }
       }
-      @media (max-width: 959.9px) {
+      @media (max-width: 960px) {
         .custom-min-height {
-          min-height: calc(-107px + 100vh);
+          min-height: calc(100vh - 110px);
         }
       }
       .breadcrumbs {
-        margin-bottom: 20px;
+        margin-bottom: 32px;
       }
       .breadcrumbs > a {
         color: #0095ee;
@@ -37,19 +63,39 @@
     </style>
   </head>
 
-  <body>
-    <main class="container mx-auto md:my-28 px-5 custom-min-height">
-      <div class='w-full max-w-xl mx-auto'>
-        <% flash.each do |type, message| %>
-          <div class="<%= flash_class(type) %> rounded px-4 py-3 mb-4 text-sm">
-            <%= message %>
-          </div>
-        <% end %>
-      </div>
-      <%= yield %>
-      <div class='w-full max-w-xl mx-auto'>
-        <%= breadcrumbs pretext: "", separator: " &rsaquo; " %>
-      </div>
+<body class="flex flex-col custom-min-height">
+    <main class="container mx-auto md:mt-28 px-5 flex-grow">
+        <div class='w-full max-w-xl mx-auto'>
+            <% flash.each do |type, message| %>
+                <div class="<%= flash_class(type) %> rounded px-4 py-3 mb-4 text-sm">
+                    <%= message %>
+                </div>
+            <% end %>
+        </div>
+        <%= yield %>
+        <div class='w-full max-w-xl mx-auto'>
+            <%= breadcrumbs pretext: "", separator: " &rsaquo; " %>
+        </div>
     </main>
-  </body>
+    <% unless content_for?(:hide_footer) %>
+        <footer class="bg-gray-200 py-5 text-center border-t border-gray-200">
+            <div class="mx-auto flex justify-center text-sm text-gray-500 gap-5">
+                <div class='inline-grid md:inline'>
+                  <% if user_signed_in? %>
+                    <%= link_to 'マイページ', mypage_path, class: 'mb-2 mr-4' %>
+                  <% else %>
+                    <%= link_to 'ログイン・会員登録', new_user_session_path, class: 'mb-2 mr-4' %>
+                  <% end %>
+                  <%= link_to 'サービスについて', about_path, target: "_blank" %>
+                  <div>　 </div>
+                </div>
+                <div class='inline-grid md:inline'>
+                  <%= link_to 'お問い合わせ', 'https://forms.gle/erDGr5ZAUdf3Hatq7', target: "_blank", class: 'mb-2 mr-4' %>
+                  <%= link_to '利用規約', terms_path, target: "_blank", class: 'mb-2 mr-4' %>
+                  <%= link_to 'プライバシーポリシー', privacy_path, target: "_blank" %>
+                </div>
+            </div>
+        </footer>
+    <% end %>
+</body>
 </html>
