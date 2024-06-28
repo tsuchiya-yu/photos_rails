@@ -13,7 +13,7 @@ class Mypage::GroupsController < Mypage::MypageApplicationController
   end
 
   def show
-    @group = current_user.groups.find(params[:id])
+    @group = current_user.groups.includes(albums: :media_items).find(params[:id])
   end
 
   def edit
