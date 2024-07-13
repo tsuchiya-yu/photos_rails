@@ -1,8 +1,23 @@
 <% content_for :title, "マイページ" %>
 <div class='container mx-auto py-8 w-full max-w-xl flex-grow outline-none'>
     <%= render 'shared/page_title', title: 'マイページ' %>
-    <div class="container mx-auto py-8">
-        <%= render 'shared/list_title', title: '参加中のグループ' %>
+
+    <section class='mb-8'>
+        <%= render 'shared/list_title', title: '設定' %>
+        <%= render 'shared/list_item', title: '' %>
+        <%= link_to edit_mypage_users_path do %>
+            <%= render 'shared/list_item', title: '会員情報の編集' %>
+        <% end %>
+    </section>
+
+    <!-- admax -->
+    <aside class='mt-2 mb-4'>
+        <script src="https://adm.shinobi.jp/s/a92897479972bb5947e754729f8c2c8a"></script>
+    </aside>
+    <!-- admax -->
+
+    <div class="container mx-auto pb-8">
+        <%= render 'shared/list_title', title: 'グループ' %>
         <%= render 'shared/list_item', title: '' %>
         <% current_user.groups.each do |group| %>
             <%= link_to mypage_group_path(group) do %>
